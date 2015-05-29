@@ -1,0 +1,27 @@
+{
+  "name": "Steamize",
+  "description": "",
+  "version": "0.0.1",
+  "dependencies": {
+    "body-parser": "^1.9.0",
+    "ejs": "*",
+    "express": "~4.*",
+    "express-session": "^1.8.2",
+    "method-override": "^2.2.0",
+    "mongoose": "*",
+    "request": "^2.55.0",
+    "grunt": "latest",
+    "grunt-contrib-uglify": "latest",
+    "grunt-contrib-less": "latest",
+    "grunt-contrib-cssmin": "latest",
+    "grunt-contrib-watch": "latest"
+  
+},
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "scripts": {
+    "start": "node app.js"
+  }
+}

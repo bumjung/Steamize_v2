@@ -1,0 +1,9 @@
+html,
+body {
+  height: 100%;
+}
+body {
+  background-color: #272e38;
+  background-image: -webkit-linear-gradient(-28deg, #272e38 0%, #272e38 60%, #333a44 60%, #333a44 60%);
+  background-image: linear-gradient(-28deg, #272e38 0%, #272e38 60%, #333a44 60%, #333a44 60%);
+}
