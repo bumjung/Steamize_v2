@@ -35,6 +35,27 @@ module.exports = function(grunt) {
         scripts: {
             files: 'static/js/*.js',
             tasks: 'uglify'
+        },
+        requirejs: {
+            options: {
+                paths: {
+                    'appFiles': './src/core/mvc/'
+                },
+                removeCombined: true,
+                out: './dist/js/angular/steamize.min.js',
+                optimize: 'none',
+                name: './src/core/mvc/main'
+            },
+            dev:{
+                options:{
+                    optimize:'none'
+                }
+            },
+            release:{
+                options:{
+                    optimize:'uglify'
+                }
+              }
         }
     });
 
@@ -45,4 +66,5 @@ module.exports = function(grunt) {
     grunt.loadNpmTasks('grunt-contrib-less');
     grunt.loadNpmTasks('grunt-contrib-cssmin');
     grunt.loadNpmTasks('grunt-contrib-watch');
+    grunt.loadNpmTasks('grunt-contrib-requirejs');
 };

@@ -1,5 +1,5 @@
 {
-  "name": "Steamize",
+  "name": "Steamize_v2",
   "description": "",
   "version": "0.0.1",
   "dependencies": {
@@ -14,8 +14,8 @@
     "grunt-contrib-uglify": "latest",
     "grunt-contrib-less": "latest",
     "grunt-contrib-cssmin": "latest",
-    "grunt-contrib-watch": "latest"
-  
+    "grunt-contrib-watch": "latest",
+    "grunt-contrib-requirejs": "latest"
 },
   "repository": {
     "type": "git",

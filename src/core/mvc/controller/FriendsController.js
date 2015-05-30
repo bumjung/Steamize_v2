@@ -1,10 +1,10 @@
-'use strict';
+define([], function() {
+	'use strict';
 
-var friendsController = function($scope, SteamService) {
-	this.$scope = $scope;
-	init();
-}
+	var friendsController = function($scope, SteamService){
+	}
 
-$.extend(friendsController.prototype, {
-	init: function(){}
+	friendsController.$inject = ['$scope', 'SteamService'];
+
+	return friendsController;
 });

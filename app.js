@@ -15,6 +15,7 @@ mongoose.connect(database.url);
 
 app.set("view options", {layout: false});
 app.use("/dist", express.static(__dirname + "/dist"));
+app.use("/bower_components", express.static(__dirname + "/bower_components"));
 app.use("/src", express.static(__dirname + "/src"));
 app.set('views', __dirname + '/src/core/mvc/view');
 app.engine('html', require('ejs').renderFile);

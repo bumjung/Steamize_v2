@@ -1,11 +1,10 @@
-'use strict';
+define([], function() {
+	'use strict';
 
-var achievementController = function($scope, SteamService) {
-	this.$scope = $scope;
-	init();
-}
+	var achievementController = function($scope, SteamService){
+	}
 
-$.extend(achievementController.prototype, {
-	init: function(){}
+	achievementController.$inject = ['$scope', 'SteamService'];
+
+	return achievementController;
 });
-
