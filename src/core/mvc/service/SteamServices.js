@@ -16,7 +16,7 @@ define([], function(){
                 return $http.get('/api/id/'+id+'/games');
             },
             getGameStats : function(id, appId){
-                return $http.get('/api/id/'+id+'/'+appId);
+                return $http.get('/api/id/'+id+'/stats/'+appId);
             }
         };
     }

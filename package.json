@@ -7,16 +7,16 @@
     "ejs": "*",
     "express": "~4.*",
     "express-session": "^1.8.2",
-    "method-override": "^2.2.0",
-    "mongoose": "*",
-    "request": "^2.55.0",
     "grunt": "latest",
-    "grunt-contrib-uglify": "latest",
-    "grunt-contrib-less": "latest",
     "grunt-contrib-cssmin": "latest",
+    "grunt-contrib-less": "latest",
+    "grunt-contrib-requirejs": "latest",
+    "grunt-contrib-uglify": "latest",
     "grunt-contrib-watch": "latest",
-    "grunt-contrib-requirejs": "latest"
-},
+    "method-override": "^2.2.0",
+    "mongoose": "^4.0.5",
+    "request": "^2.55.0"
+  },
   "repository": {
     "type": "git",
     "url": ""

@@ -8,10 +8,10 @@ var bodyParser  = require('body-parser');
 var session     = require('express-session');
 var methodOverride = require('method-override');
 
-var database = require('./config/database');
+var dbConfig = require('./config/database');
 
 // configuration ===============================================================
-mongoose.connect(database.url);
+mongoose.connect(dbConfig.url);
 
 app.set("view options", {layout: false});
 app.use("/dist", express.static(__dirname + "/dist"));
