@@ -5,16 +5,13 @@ var _ = require('underscore');
 var request = require('request');
 var key 	= require('../config/key').key;
 var database = require('../app/database');
-
-var API_URL_USER = 'http://api.steampowered.com/ISteamUser';
-var API_URL_STATS = 'http://api.steampowered.com/ISteamUserStats';
-var API_URL_PLAYER = 'http://api.steampowered.com/IPlayerService';
+var SteamURL = require('../config/steamUrl');
 
 function saveGameSchema(appId) {
-    return database.checkGameSchemaExists(Q, appId)
+    return database.checkGameSchemaExists(appId)
     .then(function (exists) {
         if(!exists) {
-            var url = API_URL_STATS + '/GetSchemaForGame/v2/?key='+key+'&appid='+appId;
+            var url = SteamURL.API_URL_STATS + '/GetSchemaForGame/v2/?key='+key+'&appid='+appId;
 
             sendRequest(url)
             .then(function (body) {
@@ -28,14 +25,27 @@ function saveGameSchema(appId) {
                     response['achievements'] = [];
                 }
 
-                return database.saveGameSchema(Q, response);
+                return database.saveGameSchema(response);
             });
         } else {
             return false;
         }
     });
 }
+function getUserGameSchemas(promise) {
+    var getSchemaPromises = _.map(promise, function (arr) {
+        if(arr.state === 'fulfilled' && arr.value) {
+            return database.getGameSchema(arr.value.appId).then(function (schema) {
+                _.map(schema.achievements, function (achievement) {
+                    achievement['achieved'] = arr.value[achievement['name']];
+                });
 
+                return schema;
+            });
+        }
+    });
+    return Q.all(getSchemaPromises);
+}
 function sendRequest(url) {
     var deferred = Q.defer();
 
@@ -50,7 +60,7 @@ function sendRequest(url) {
     return deferred.promise;
 }
 
-var routes = function (app, router){
+var routes = function (app, router) {
 	// application -------------------------------------------------------------
 	app.get('/', function (req, res) {
 	    res.render('index.html');
@@ -67,7 +77,7 @@ var routes = function (app, router){
 
     router.route('/id/:steam_id')
         .get(function (req, res) {
-            var url = API_URL_USER + '/GetPlayerSummaries/v0002/?key='+key+'&steamids='+req.params.steam_id;
+            var url = SteamURL.API_URL_USER + '/GetPlayerSummaries/v0002/?key='+key+'&steamids='+req.params.steam_id;
             
             sendRequest(url).then(function (body) {
                 res.json(JSON.parse(body));
@@ -76,18 +86,18 @@ var routes = function (app, router){
 
     router.route('/id/:steam_id/friends')
         .get(function (req, res) {
-            var url = API_URL_USER + '/GetFriendList/v0001/?key='+key+'&steamid='+req.params.steam_id+'&relationship=friend';
+            var url = SteamURL.API_URL_USER + '/GetFriendList/v0001/?key='+key+'&steamid='+req.params.steam_id+'&relationship=friend';
             
-            sendRequest(url).then(function (body){
+            sendRequest(url).then(function (body) {
                 res.json(JSON.parse(body));
             });
         });
 
     router.route('/id/:steam_id/games')
         .get(function (req,res) {
-            var url = API_URL_PLAYER + '/GetOwnedGames/v0001/?key='+key+'&steamid='+req.params.steam_id+'&include_appinfo=1';
+            var url = SteamURL.API_URL_PLAYER + '/GetOwnedGames/v0001/?key='+key+'&steamid='+req.params.steam_id+'&include_appinfo=1';
 
-            sendRequest(url).then (function (body){
+            sendRequest(url).then(function (body) {
                 var body = JSON.parse(body);
                 var games = body.response.games;
 
@@ -99,7 +109,7 @@ var routes = function (app, router){
                                 saveGameSchema(games[i].appid)
                             );
                             
-                            var url = API_URL_STATS + '/GetPlayerAchievements/v0001/?appid='+games[i].appid+'&key='+key+'&steamid='+req.params.steam_id;
+                            var url = SteamURL.API_URL_STATS + '/GetPlayerAchievements/v0001/?appid='+games[i].appid+'&key='+key+'&steamid='+req.params.steam_id;
                             
                             promises.push(
                                 sendRequest(url)
@@ -107,9 +117,13 @@ var routes = function (app, router){
                                     var body = JSON.parse(body);
                                     var response = {
                                         name: body.playerstats.gameName,
-                                        app_id: games[i].appid,
-                                        achievements: body.playerstats.achievements
+                                        appId: games[i].appid
                                     };
+
+                                    _.map(body.playerstats.achievements, function (achievement) {
+                                        response[achievement['apiname']] = achievement['achieved'];
+                                    });
+                                    
                                     return response;
                                 })
                             );
@@ -119,14 +133,10 @@ var routes = function (app, router){
 
                 var result = [];
 
-                Q.allSettled(promises).then(function (arr) {
-                    result = arr.map(function (arr){
-                        if(arr.state === 'fulfilled') {
-                            return arr.value;
-                        }
+                Q.allSettled(promises).then(function (promise) {
+                    getUserGameSchemas(promise).then(function (schemas) {
+                        res.json(_.compact(schemas));
                     });
-
-                    res.json(_.compact(result));
                 });
             });
         });
@@ -135,7 +145,7 @@ var routes = function (app, router){
         .get(function (req,res) {
             var url = 'http://api.steampowered.com/ISteamUserStats/GetUserStatsForGame/v0002/?appid='+req.params.app_id+'&key='+key+'&steamid='+req.params.steam_id;
 
-            sendRequest(url).then(function (body){
+            sendRequest(url).then(function (body) {
                 res.json(JSON.parse(body));
             });
         });

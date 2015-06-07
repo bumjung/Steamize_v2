@@ -8,7 +8,8 @@ var achievementSchema = new Schema({
     	displayName: String,
     	description: String,
     	icon: String,
-    	iconGray: String
+    	iconGray: String,
+    	achieved: Number
     }]
 });
 
