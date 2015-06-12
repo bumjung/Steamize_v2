@@ -10,6 +10,8 @@ var methodOverride = require('method-override');
 
 var dbConfig = require('./config/database');
 
+var accountConstructor = require('./app/account');
+
 // configuration ===============================================================
 mongoose.connect(dbConfig.url);
 
@@ -26,8 +28,11 @@ app.use(bodyParser.json());                                     // parse applica
 app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse application/vnd.api+json as json
 app.use(methodOverride());
 
+// constructors ================================================================
+var Account = new accountConstructor();
+
 // routes ======================================================================
-require('./app/routes')(app, router);
+require('./app/routes')(app, router, Account);
 
 // listen ======================================================================
 app.listen(app.get('port'));

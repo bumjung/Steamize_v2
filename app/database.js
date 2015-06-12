@@ -2,7 +2,7 @@
 
 var Q = require('q');
 var mongoose = require('mongoose');
-var GameSchema = require('./models/gameSchema');
+var GameSchema = require('./model/gameSchema');
 
 var Database = {
 	saveGameSchema: function(schema) {
