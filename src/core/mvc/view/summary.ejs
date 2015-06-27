@@ -8,13 +8,12 @@
 </head>
 <body>
 <div class="container">
-
-    {{test}}
-
+	<%= view %>
+	<% if(view.personaname) { %> <%= view.personaname %>dagsg <% } %>
 </div>
-	<script data-main='/src/core/mvc/main' src="/bower_components/requirejs/require.js"></script>
+	<script src="/bower_components/requirejs/require.js"></script>
 	<script src="/bower_components/jquery/dist/jquery.js"></script>
-	<script src="/bower_components/angular/angular.js"></script>
-	<script src="/bower_components/angular-route/angular-route.js"></script>
+
+	<% include ./variable_setup %>
 </body>
 </html>

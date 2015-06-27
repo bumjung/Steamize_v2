@@ -1,0 +1,10 @@
+<script>
+	require(['/static/js/boot.js'], function (boot) {
+		var sz = {};
+
+		sz.summary = {};
+		sz.summary.steamId = <%= view.steamId %>
+
+		boot.load(sz);
+	});
+</script>

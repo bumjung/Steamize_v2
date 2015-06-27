@@ -4,7 +4,7 @@
   "version": "0.0.1",
   "dependencies": {
     "body-parser": "^1.9.0",
-    "ejs": "*",
+    "ejs": "^2.3.1",
     "express": "~4.*",
     "express-session": "^1.8.2",
     "grunt": "latest",

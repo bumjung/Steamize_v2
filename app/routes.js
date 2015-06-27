@@ -77,8 +77,16 @@ function getAppDetails(appId) {
 var routes = function (app, router, Account) {
 	// application -------------------------------------------------------------
 	app.get('/', function (req, res) {
-	    res.render('index.html');
+	    res.render('index');
 	});
+
+    app.get('/id/:steam_id', function(req, res) {
+        var renderer = {
+            steamId: req.params.steam_id
+        }
+
+        res.render('summary', {view: renderer});
+    });
 
 	// routes ======================================================================
 
@@ -90,21 +98,23 @@ var routes = function (app, router, Account) {
     });
 
     router.route('/id/:steam_id')
-        .post(function (req, res){
-            Account._init(req.params.steam_id).then(function () {
-                // redirect to /id/:steam_id
-                res.json({
-                    success: 1,
-                    redirect: '/id/'+Account.getSteamId()
-                });
-            });
-        })
-
         .get(function (req, res) {
-            var url = URL.getPlayerSummaries(req.params.steam_id);
-            hp.sendRequest(url).then(function (body) {
-                res.json(JSON.parse(body));
-            });
+            Account._init(req.params.steam_id)
+                .then(function () {
+                    var url = URL.getPlayerSummaries(req.params.steam_id);
+                    return hp.sendRequest(url);
+                }).then(function (body) {
+                    body = JSON.parse(body);
+
+                    var renderer = {};
+
+                    if(body['response'] && body['response']['players'].length === 1) {
+                        view = body['repsonse']['players'][0];
+                        res.json({ success: '1' });
+                    } else {
+                        res.json({ success: '0' });
+                    }
+                });
         });
 
     router.route('/id/:steam_id/friends')

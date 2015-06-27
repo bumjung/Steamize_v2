@@ -15,12 +15,12 @@ var accountConstructor = require('./app/account');
 // configuration ===============================================================
 mongoose.connect(dbConfig.url);
 
-app.set("view options", {layout: false});
 app.use("/dist", express.static(__dirname + "/dist"));
+app.use("/static", express.static(__dirname + "/static"));
 app.use("/bower_components", express.static(__dirname + "/bower_components"));
 app.use("/src", express.static(__dirname + "/src"));
 app.set('views', __dirname + '/src/core/mvc/view');
-app.engine('html', require('ejs').renderFile);
+app.set('view engine', 'ejs');
 app.set('port', process.env.PORT || 4455);
 
 app.use(bodyParser.urlencoded({'extended':'true'}));            // parse application/x-www-form-urlencoded
