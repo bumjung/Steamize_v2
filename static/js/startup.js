@@ -1,9 +1,9 @@
 define([
 	'./summary.js'], function(summary) {
-	var boot = {
+	var startup = {
 		load: function (sz) {
-			// dynamically call
-			this.summary(sz);
+			var fcn = this[$('body').data('name')];
+			fcn(sz);
 		},
 
 		summary: function (sz) {
@@ -19,5 +19,5 @@ define([
 		}
 	}
 
-	return boot;
+	return startup;
 });

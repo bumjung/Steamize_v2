@@ -1,19 +1,13 @@
 <!-- public/index.html -->
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Steamize</title>
-    <link type="text/css" rel="stylesheet" href="/dist/css/style.min.css">
-</head>
-<body>
-<div class="container">
-	<%= view %>
-	<% if(view.personaname) { %> <%= view.personaname %>dagsg <% } %>
-</div>
-	<script src="/bower_components/requirejs/require.js"></script>
-	<script src="/bower_components/jquery/dist/jquery.js"></script>
-
-	<% include ./variable_setup %>
-</body>
+	<% include ./header %>
+	<body data-name="summary">
+		<div class="profileContainer">
+		</div>
+		<div class="friendsContainer">
+		</div>
+		<% include ./basic_scripts %>
+		<% include ./variable_setup %>
+	</body>
 </html>

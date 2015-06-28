@@ -1,10 +1,10 @@
 <script>
-	require(['/static/js/boot.js'], function (boot) {
+	require(['/static/js/startup.js'], function (startup) {
 		var sz = {};
 
 		sz.summary = {};
-		sz.summary.steamId = <%= view.steamId %>
+		sz.summary.steamId = '<%= view.steamId %>'
 
-		boot.load(sz);
+		startup.load(sz);
 	});
 </script>

@@ -1,21 +1,15 @@
 <!-- public/index.html -->
 <!doctype html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Steamize</title>
-    <link type="text/css" rel="stylesheet" href="/dist/css/style.min.css">
-</head>
-<body>
-<div class="container">
-	<form method="POST" id="steamIDForm" class="" onsubmit="index.submit();">
-		<input type="text" class="steamIDInput" name="steamIDInput" />
-		<button type="submit" form="steamIDForm" value="Submit">Search</button>
-	</form>
-</div>
-	<script src="/bower_components/requirejs/require.js"></script>
-	<script src="/bower_components/jquery/dist/jquery.js"></script>
+	<% include ./header %>
+	<body data-name="index">
+		<div class="container">
+			<form method="POST" id="steamIDForm" class="" onsubmit="index.submit();">
+				<input type="text" class="steamIDInput" name="steamIDInput" />
+				<button type="submit" form="steamIDForm" value="Submit">Search</button>
+			</form>
+		</div>
 
-	<script src="/static/js/index.js"></script>
-</body>
+		<% include ./basic_scripts %>
+	</body>
 </html>

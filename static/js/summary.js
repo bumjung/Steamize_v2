@@ -1,32 +1,39 @@
-define([], function () {
+define([
+	'./smz.js',
+	'./view.js'
+	], function (smz, View) {
 	'use strict';
 
 	var summary = {};
 
 	summary.init = function(data) {
 		$.extend(summary, data);
+		var profileView = new View('profile');
+		var friendsView = new View('friends');
 
 		summary.getProfileData(summary.steamId)
 			.then(function(data) {
-				console.log(data);
+				profileView.update(data);
+			});
+
+		summary.getFriendsData(summary.steamId)
+			.then(function(data) {
+				friendsView.update(data);
 			});
 	}
 
 	summary.getProfileData = function(steamId) {
-		var dfd = $.Deferred();
-
-		$.ajax({
-			'url': '/api/id/'+ summary.steamId,
-			'type': 'GET'
-		})
-		.done(function (data, textStatus, jqXHR) {
-			dfd.resolve(data);
-		})
-		.fail(function (jqXHR, textStatus, errorThrown) {
-			dfd.reject(errorThrown);
-		});
-
-		return dfd.promise();
+		return smz.request('/api/id/'+ steamId);
 	}
+
+	summary.getFriendsData = function(steamId) {
+		return smz.request('/api/id/'+steamId+'/friends');
+	}
+
+	summary.getGamesData = function(steamId) {
+		return smz.request('/id/'+steamId+'/games');
+	}
+
+
 	return summary;
 });

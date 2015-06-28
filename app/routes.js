@@ -66,13 +66,26 @@ function getPlayerAchievements(appId, steamId) {
 function getAppDetails(appId) {
     var url = URL.getAppDetails(appId);
 
-    return hp.sendRequest(url).then(function (body){
+    return hp.sendRequest(url).then(function (body) {
         var body = JSON.parse(body);
 
         return body[appId]['data'];
     });
 }
 
+function getFriendsDetails(steamId) {
+    var url = URL.getPlayerSummaries(steamId);
+    return hp.sendRequest(url).then(function (body) {
+        body = JSON.parse(body);
+        var response = {};
+
+        if (body['response'] && body['response']['players'].length === 1) {
+            response = body['response']['players'][0];
+        }
+
+        return response;
+    });
+}
 
 var routes = function (app, router, Account) {
 	// application -------------------------------------------------------------
@@ -81,11 +94,10 @@ var routes = function (app, router, Account) {
 	});
 
     app.get('/id/:steam_id', function(req, res) {
-        var renderer = {
+        var data = {
             steamId: req.params.steam_id
         }
-
-        res.render('summary', {view: renderer});
+        res.render('summary', {view: data});
     });
 
 	// routes ======================================================================
@@ -106,13 +118,16 @@ var routes = function (app, router, Account) {
                 }).then(function (body) {
                     body = JSON.parse(body);
 
-                    var renderer = {};
-
                     if(body['response'] && body['response']['players'].length === 1) {
-                        view = body['repsonse']['players'][0];
-                        res.json({ success: '1' });
+                        res.json({
+                            success: 1,
+                            view: {
+                                data: body['response']['players'][0],
+                                template: '/src/core/mvc/view/profile.ejs'
+                            }
+                        });
                     } else {
-                        res.json({ success: '0' });
+                        res.json({ success: 0 });
                     }
                 });
         });
@@ -121,7 +136,46 @@ var routes = function (app, router, Account) {
         .get(function (req, res) {
             var url = URL.getFriendsList(req.params.steam_id);
             hp.sendRequest(url).then(function (body) {
-                res.json(JSON.parse(body));
+                body = JSON.parse(body);
+
+                if(body && body['friendslist']) {
+                    var list = body['friendslist']['friends'];
+
+                    var promises = [];
+
+                    for(var i = 0; i < list.length; i++) {
+                        (function (i) {
+                            if(list[i]['relationship'] === 'friend') {
+                                promises.push(
+                                    getFriendsDetails(list[i]['steamid'])
+                                );
+                            }
+                        }(i));
+                    }
+
+
+                    Q.allSettled(promises).then(function (promise) {
+                        var result = [];
+
+                        for(var i = 0; i < promise.length; i++) {
+                            if (promise[i]['state'] === 'fulfilled') {
+                                result.push(promise[i]['value'])
+                            }
+                        }
+
+                        if(result.length > 0) {
+                            res.json({
+                                success: 1,
+                                view: {
+                                    data: { friends: result },
+                                    template: '/src/core/mvc/view/friends.ejs'
+                                }
+                            });
+                        } else {
+                            res.json({ success: 0 })
+                        }
+                    });
+                }
             });
         });
 
