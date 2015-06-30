@@ -8,7 +8,6 @@ var hp = require('./helper.js');
 var Account = function() {
 	this.steamId = null;
 	this.gamesList = [];
-	this.whenReady = null;
 }
 
 _.extend(Account.prototype, {
@@ -39,10 +38,6 @@ _.extend(Account.prototype, {
 
 	setGamesList: function(gamesList) {
 		this.gamesList = gamesList;
-	},
-
-	whenReady: function() {
-		return whenReady;
 	}
 });
 

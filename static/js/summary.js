@@ -10,6 +10,8 @@ define([
 		$.extend(summary, data);
 		var profileView = new View('profile');
 		var friendsView = new View('friends');
+		var gamesView = new View('games');
+		var gamesDetailView = new View('gamesDetail');
 
 		summary.getProfileData(summary.steamId)
 			.then(function(data) {
@@ -19,6 +21,15 @@ define([
 		summary.getFriendsData(summary.steamId)
 			.then(function(data) {
 				friendsView.update(data);
+			});
+
+		summary.getGamesData(summary.steamId)
+			.then(function(data) {
+				gamesView.update(data);
+			});
+		summary.getGamesDetailData(summary.steamId)
+			.then(function(data) {
+				gamesDetailView.update(data);
 			});
 	}
 
@@ -31,7 +42,11 @@ define([
 	}
 
 	summary.getGamesData = function(steamId) {
-		return smz.request('/id/'+steamId+'/games');
+		return smz.request('/api/id/'+steamId+'/games');
+	}
+
+	summary.getGamesDetailData = function(steamId) {
+		return smz.request('/api/id/'+steamId+'/gameDetails')
 	}
 
 

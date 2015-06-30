@@ -1,0 +1,13 @@
+<ul>
+<% for (var i = 0; i < games.length; i++) { %>
+	<li> <%= games[i]['name'] %> : <%= games[i]['playTimeForever'] %> minutes </li>
+	<li> Total Achievements : <%= games[i]['achievementCount'] %> </li>
+	<li>
+		<ul>
+		<% for (var j = 0; j < games[i]['demoAchievements'].length; j++) { %>
+			<li><%= games[i]['demoAchievements'][j]['displayName'] %>: <%= games[i]['demoAchievements'][j]['achieved'] %></li>
+		<% } %>
+		</ul>
+	</li>
+<% } %>
+</ul>
