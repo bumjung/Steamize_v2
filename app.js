@@ -10,7 +10,12 @@ var methodOverride = require('method-override');
 
 var dbConfig = require('./config/database');
 
-var accountConstructor = require('./app/account');
+var Account = require('./app/account');
+var AccountController = require('./app/controller/AccountController');
+var ProfileController = require('./app/controller/ProfileController');
+var FriendsController = require('./app/controller/FriendsController');
+var GamesController = require('./app/controller/GamesController');
+var GamesDetailController = require('./app/controller/GamesDetailController');
 
 // configuration ===============================================================
 mongoose.connect(dbConfig.url);
@@ -29,10 +34,15 @@ app.use(bodyParser.json({ type: 'application/vnd.api+json' })); // parse applica
 app.use(methodOverride());
 
 // constructors ================================================================
-var Account = new accountConstructor();
+var account = new Account();
+var accountController = new AccountController();
+var profileController = new ProfileController();
+var gamesController = new GamesController();
+var friendsController = new FriendsController();
+var gamesDetailController = new GamesDetailController();
 
 // routes ======================================================================
-require('./app/routes')(app, router, Account);
+require('./app/routes')(app, router, account, accountController, profileController, friendsController, gamesController, gamesDetailController);
 
 // listen ======================================================================
 app.listen(app.get('port'));

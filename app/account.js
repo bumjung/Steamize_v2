@@ -3,7 +3,6 @@
 var Q = require('q');
 var _ = require('underscore');
 var URL = require('../config/steamUrl');
-var hp = require('./helper.js');
 
 var Account = function() {
 	this.steamId = null;
@@ -12,16 +11,14 @@ var Account = function() {
 
 _.extend(Account.prototype, {
 
-	_init: function(steamId) {
+	_init: function(steamId, AccountController) {
 		var self = this;
-		this.setSteamId(steamId);
+		self.setSteamId(steamId);
 
-		var url = URL.getOwnedGames(steamId);
-		
-		return hp.sendRequest(url).then(function (body) {
-            var body = JSON.parse(body);    
-            self.setGamesList(body.response.games);
-        });
+		return AccountController.getOwnedGames(steamId)
+			.then(function (ownedGames) {
+            	self.setGamesList(ownedGames);
+			});
 	},
 
 	getSteamId: function() {
