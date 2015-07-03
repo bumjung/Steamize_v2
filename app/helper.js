@@ -26,35 +26,55 @@ Helper.getRandomInt = function (min, max) {
 	return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
-Helper.formatGamesJSON = function (json) {
-	var newJSON = [];
+Helper.compare = function (a,b) {
+  if (a.playtime_forever < b.playtime_forever)
+    return 1;
+  if (a.playtime_forever > b.playtime_forever)
+    return -1;
+  return 0;
+}
 
-	for (var i = 0; i < json.length; i++) {
+Helper.formatGamesJSON = function (userGameSchemas) {
+	var newUserGameSchema = {
+		games: [],
+		totalPlayedTime: 0
+	};
+	var totalPlayedTime = 0;
+
+	// sort by decreasing order
+	userGameSchemas.sort(Helper.compare);
+
+	for (var i = 0; i < userGameSchemas.length; i++) {
 		var demoAchievements = [];
 		var alreadyInDemo = {};
 
-		if (json[i].achievements.length > Helper.MAX_DEMO_ACHIEVEMENTS) {
+		totalPlayedTime += userGameSchemas[i]['playtime_forever'];
+
+		// @TODO: 	- Implement this into a generic function
+		// 			- if < 5 completed achievements, fill up the rest with uncompleted using generic fcn
+		if (userGameSchemas[i]['achievements']['completed'].length > Helper.MAX_DEMO_ACHIEVEMENTS) {
 			for (var j = 0; j < Helper.MAX_DEMO_ACHIEVEMENTS; j++) {
 				do {
-					var rnd = Helper.getRandomInt(0, json[i].achievements.length-1);
+					var rnd = Helper.getRandomInt(0, userGameSchemas[i]['achievements']['completed'].length-1);
 				} while(alreadyInDemo[rnd]);
 
-				demoAchievements.push(json[i].achievements[rnd]);
+				demoAchievements.push(userGameSchemas[i]['achievements']['completed'][rnd]);
 				alreadyInDemo[rnd] = 1;
 			}
 		} else {
-			demoAchievements = json[i].achievements;
+			demoAchievements = userGameSchemas[i]['achievements']['completed'];
 		}
 
-		newJSON.push({
-			name: json[i]['name'],
-			playTimeForever: json[i]['playtime_forever'],
-			achievementCount: json[i].achievements.length,
+		newUserGameSchema['games'].push({
+			name: userGameSchemas[i]['name'],
+			playTimeForever: userGameSchemas[i]['playtime_forever'],
+			achievementCount: userGameSchemas[i]['achievements']['completed'].length + userGameSchemas[i]['achievements']['uncompleted'].length,
 			demoAchievements: demoAchievements
 		});
 	}
 
-	return newJSON;
+	newUserGameSchema['totalPlayedTime'] = totalPlayedTime;
+	return newUserGameSchema;
 }
 
 module.exports = Helper;

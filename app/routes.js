@@ -35,14 +35,25 @@ function getUserGameSchemas(promise) {
     var getSchemaPromises = _.map(promise, function (arr) {
         if (arr['state'] === 'fulfilled' && arr['value']) {
             return database.getGameSchema(arr['value']['appId']).then(function (schema) {
-                _.map(schema['achievements'], function (achievement) {
-                    achievement['achieved'] = arr['value'][achievement['name']];
-                });
+                var completedAchievements = [];
+                var uncompletedAchievements = [];
+
+                for (var i = 0; i < schema['achievements'].length; i++) {
+                    schema['achievements'][i]['achieved'] = arr['value'][schema['achievements'][i]['name']];
+                    if (schema['achievements'][i]['achieved'] === 1) {
+                        completedAchievements.push(schema['achievements'][i]);
+                    } else {
+                        uncompletedAchievements.push(schema['achievements'][i]);
+                    }
+                }
                 return {
                     name: arr['value']['name'],
                     playtime_forever: arr['value']['playtime_forever'],
                     appId: schema['appId'],
-                    achievements: schema['achievements']
+                    achievements: {
+                        completed: completedAchievements,
+                        uncompleted: uncompletedAchievements
+                    }
                 };
             });
         }
@@ -60,9 +71,9 @@ function getPlayerAchievements(game, steamId) {
             appId: game['appid']
         };
 
-        _.map(body.playerstats.achievements, function (achievement) {
-            response[achievement['apiname']] = achievement['achieved'];
-        });
+        for (var i = 0; i < body['playerstats']['achievements'].length; i++) {
+            response[body['playerstats']['achievements'][i]['apiname']] = body['playerstats']['achievements'][i]['achieved'];
+        };
         
         return response;
     })
@@ -72,7 +83,6 @@ function getAppDetails(appId) {
 
     return hp.sendRequest(url).then(function (body) {
         var body = JSON.parse(body);
-
         return body[appId]['data'];
     });
 }
@@ -213,7 +223,10 @@ var routes = function (app, router, Account) {
                     res.json({
                         success: 1,
                         view: {
-                            data: { games: schemas },
+                            data: { 
+                                games: schemas['games'],
+                                totalPlayedTime: (schemas['totalPlayedTime']/60)
+                            },
                             template: '/src/core/mvc/view/games.ejs'
                         }
                     });
@@ -239,31 +252,44 @@ var routes = function (app, router, Account) {
             }
 
             Q.allSettled(promises).then(function (promise) {
-                var gamesDetailData = _.map(promise, function (arr) {
-                    var value = arr['value'];
-                    if(arr['state'] === 'fulfilled' && value) {
-                        return {
+                var gamesDetailData = [];
+                var costTotal = 0;
+
+
+                for(var i = 0; i < promise.length; i++) {
+                    var value = promise[i]['value'];
+
+                    if(promise[i]['state'] === 'fulfilled' && value) {
+                        var priceOverview = value['price_overview'] ? value['price_overview'] : { currency: 'USD', inital: 0, 'final': 0, discount_percent: 0};
+                        var platforms = value['platforms'] ? value['platforms'] : {};
+                        var metacritic = value['metacritic'] ? value['metacritic'] : { score: -1 };
+                        var categories = value['categories'] ? value['categories'] : {};
+                        var genres = value['genres'] ? value['genres'] : {};
+                        var background = value['background'] ? value['background'] : {};      
+                        
+                        costTotal += priceOverview['final'];
+
+                        gamesDetailData.push({
                             id: value['steam_appid'],
                             name: value['name'],
-                            price_overview: value['price_overview'],
-                            platforms: value['platforms'],
-                            metacritic: value['metacritic'],
-                            categories: value['categories'],
-                            genres: value['genres'],
-                            background: value['background']
-                        }
-                    } else {
-                        return false;
+                            priceOverview: priceOverview,
+                            platforms: platforms,
+                            metacritic: metacritic,
+                            categories: categories,
+                            genres: genres,
+                            background: background
+                        });
                     }
-                });
-                
-                gamesDetailData = _.compact(gamesDetailData);
+                };
 
                 if(gamesDetailData.length > 0) {
                     res.json({
                         success: 1,
                         view: {
-                            data: { gamesDetail: gamesDetailData },
+                            data: { 
+                                gamesDetail: gamesDetailData,
+                                totalCost: (costTotal/100)
+                            },
                             template: '/src/core/mvc/view/gamesDetail.ejs'
                         }
                     });
