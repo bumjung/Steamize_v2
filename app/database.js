@@ -15,7 +15,7 @@ var Database = {
 
 		newSchema.save(function(err) {
 			if (err) throw err;
-
+			
 			deferred.resolve(true);
 		});
 

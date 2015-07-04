@@ -11,18 +11,16 @@ var GamesDetailController = function () {
 
 GamesDetailController.prototype = _.extend(BaseController.prototype, {
     getFullGamesDetail: function (Account) { 
-        var self = this;   
+        var self = this;
         var games = Account.getGamesList();
         var promises = [];
 
         for (var i = 0; i < games.length; i++) {
-            if (games[i]['has_community_visible_stats']) {
-                (function(i) {
-                    promises.push(
-                        self.getAppDetails(games[i]['appid'])
-                    );
-                }(i));
-            }
+            (function(i) {
+                promises.push(
+                    self.getAppDetails(games[i]['appid'])
+                );
+            }(i));
         }
 
         return Q.allSettled(promises).then(function (promise) {

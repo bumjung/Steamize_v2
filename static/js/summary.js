@@ -27,6 +27,7 @@ define([
 			.then(function(data) {
 				gamesView.update(data);
 			});
+			
 		summary.getGamesDetailData(summary.steamId)
 			.then(function(data) {
 				gamesDetailView.update(data);

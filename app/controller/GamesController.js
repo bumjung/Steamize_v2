@@ -20,32 +20,36 @@ GamesController.prototype = _.extend(BaseController.prototype, {
         var promises = [];
 
         for (var i = 0; i < games.length; i++) {
-            if (games[i]['has_community_visible_stats']) {
-                (function (i) {
-                    promises.push(
-                        self.saveGameSchema(games[i]['appid']),
-                        self.getPlayerAchievements(games[i], Account.getSteamId())
-                    );
-                }(i));
-            }
+            (function (i) {
+                promises.push(
+                    self.saveGameSchema(games[i]['appid']),
+                    self.getPlayerAchievements(games[i], Account.getSteamId())
+                );
+            }(i));
         }
 
         var result = [];
 
         return Q.allSettled(promises).then(function (promise) {
-            return self.getUserGameSchemas(promise)
+            return self.getUserGameSchemas(promise);
         }).then(function (schemas) {
             schemas = _.compact(schemas);
-
-            if (schemas.length > 0) {
-                schemas = self.formatGamesJSON(schemas);
+            var cleanSchemas = [];
+            for (var i = 0; i < schemas.length; i++) {
+            	if (schemas[i]['state'] === 'fulfilled' && schemas[i]['value']) {
+            		cleanSchemas.push(schemas[i]['value']);
+            	}
+            }
+            if (cleanSchemas.length > 0) {
+                cleanSchemas = self.formatGamesJSON(cleanSchemas);
 
                 return {
                     success: 1,
                     view: {
                         data: { 
-                            games: schemas['games'],
-                            totalPlayedTime: (schemas['totalPlayedTime']/60)
+                            games: cleanSchemas['games'],
+                            totalPlayedTime: (cleanSchemas['totalPlayedTime']/60),
+                            totalAchievementsCompleted: cleanSchemas['totalAchievementsCompleted']
                         },
                         template: '/src/core/mvc/view/games.ejs'
                     }
@@ -58,32 +62,37 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 	
 	getUserGameSchemas: function (promise) {
 	    var getSchemaPromises = _.map(promise, function (arr) {
-	        if (arr['state'] === 'fulfilled' && arr['value']) {
+	        if (arr['state'] === 'fulfilled' && _.isObject(arr['value'])) {
 	            return database.getGameSchema(arr['value']['appId']).then(function (schema) {
 	                var completedAchievements = [];
 	                var uncompletedAchievements = [];
 
-	                for (var i = 0; i < schema['achievements'].length; i++) {
-	                    schema['achievements'][i]['achieved'] = arr['value'][schema['achievements'][i]['name']];
-	                    if (schema['achievements'][i]['achieved'] === 1) {
-	                        completedAchievements.push(schema['achievements'][i]);
-	                    } else {
-	                        uncompletedAchievements.push(schema['achievements'][i]);
-	                    }
-	                }
+	                if (schema && schema['achievements']) {
+		                for (var i = 0; i < schema['achievements'].length; i++) {
+		                    schema['achievements'][i]['achieved'] = arr['value'][schema['achievements'][i]['name']];
+		                    if (schema['achievements'][i]['achieved'] === 1) {
+		                        completedAchievements.push(schema['achievements'][i]);
+		                    } else {
+		                        uncompletedAchievements.push(schema['achievements'][i]);
+		                    }
+		                }
+	            	}
 	                return {
 	                    name: arr['value']['name'],
 	                    playtime_forever: arr['value']['playtime_forever'],
-	                    appId: schema['appId'],
+	                    appId: arr['value']['appId'],
 	                    achievements: {
 	                        completed: completedAchievements,
 	                        uncompleted: uncompletedAchievements
 	                    }
 	                };
 	            });
+	        } else {
+	        	return false;
 	        }
 	    });
-	    return Q.all(getSchemaPromises);
+
+	    return Q.allSettled(getSchemaPromises);
 	},
 
 	getPlayerAchievements: function (game, steamId) {
@@ -97,20 +106,24 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 	            appId: game['appid']
 	        };
 
-	        for (var i = 0; i < body['playerstats']['achievements'].length; i++) {
-	            response[body['playerstats']['achievements'][i]['apiname']] = body['playerstats']['achievements'][i]['achieved'];
-	        };
+	        if (body['playerstats'] && body['playerstats']['success'] && body['playerstats']['achievements']) {
+		        for (var i = 0; i < body['playerstats']['achievements'].length; i++) {
+		            response[body['playerstats']['achievements'][i]['apiname']] = body['playerstats']['achievements'][i]['achieved'];
+		        };
+		    }
 	        
 	        return response;
-	    })
+	    });
 	},
 
 	saveGameSchema: function (appId) {
+		var self = this;
+
 	    return database.checkGameSchemaExists(appId).then(function (exists) {
 	        if (!exists) {
 	            var url = URL.getSchemaForGame(appId);
-
-	            this.sendRequest(url).then(function (body) {
+	            
+	            return self.sendRequest(url).then(function (body) {
 	                var body = JSON.parse(body);
 	                var response = {
 	                    appId: appId
@@ -134,18 +147,20 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 
 		var newUserGameSchema = {
 			games: [],
-			totalPlayedTime: 0
+			totalPlayedTime: 0,
+			totalAchievementsCompleted: 0
 		};
 		var totalPlayedTime = 0;
+		var totalAchievementsCompleted = 0;
 
 		// sort by decreasing order
 		userGameSchemas.sort(Helper.compareGames);
-
 		for (var i = 0; i < userGameSchemas.length; i++) {
 			var demoAchievements = [];
 			var alreadyInDemo = {};
 
 			totalPlayedTime += userGameSchemas[i]['playtime_forever'];
+			totalAchievementsCompleted += userGameSchemas[i]['achievements']['completed'].length;
 
 			// @TODO: 	- Implement this into a generic function
 			// 			- if < 5 completed achievements, fill up the rest with uncompleted using generic fcn
@@ -162,6 +177,7 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 				demoAchievements = userGameSchemas[i]['achievements']['completed'];
 			}
 
+
 			newUserGameSchema['games'].push({
 				name: userGameSchemas[i]['name'],
 				playTimeForever: userGameSchemas[i]['playtime_forever'],
@@ -171,6 +187,7 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 		}
 
 		newUserGameSchema['totalPlayedTime'] = totalPlayedTime;
+		newUserGameSchema['totalAchievementsCompleted'] = totalAchievementsCompleted;
 		return newUserGameSchema;
 	}
 });
