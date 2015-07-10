@@ -7,8 +7,12 @@ var mongoose    = require('mongoose');
 var bodyParser  = require('body-parser');
 var session     = require('express-session');
 var methodOverride = require('method-override');
+var redis = require('redis');
+var client = redis.createClient();
 
 var dbConfig = require('./config/database');
+
+var Redis = require('./app/redis');
 
 var Account = require('./app/account');
 var AccountController = require('./app/controller/AccountController');
@@ -19,6 +23,12 @@ var GamesDetailController = require('./app/controller/GamesDetailController');
 
 // configuration ===============================================================
 mongoose.connect(dbConfig.url);
+
+client.on('error', function(e){
+  console.log(e);
+});
+
+var redis = new Redis(client);
 
 app.use("/dist", express.static(__dirname + "/dist"));
 app.use("/static", express.static(__dirname + "/static"));
@@ -42,7 +52,7 @@ var friendsController = new FriendsController();
 var gamesDetailController = new GamesDetailController();
 
 // routes ======================================================================
-require('./app/routes')(app, router, account, accountController, profileController, friendsController, gamesController, gamesDetailController);
+require('./app/routes')(app, router, redis, account, accountController, profileController, friendsController, gamesController, gamesDetailController);
 
 // listen ======================================================================
 app.listen(app.get('port'));

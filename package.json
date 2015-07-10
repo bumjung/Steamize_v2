@@ -16,6 +16,7 @@
     "method-override": "^2.2.0",
     "mongoose": "^4.0.5",
     "q": "^1.4.1",
+    "redis": "^0.12.1",
     "request": "^2.55.0",
     "underscore": "^1.8.3"
   },

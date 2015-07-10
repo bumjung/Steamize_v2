@@ -10,7 +10,7 @@ var GamesDetailController = function () {
 };
 
 GamesDetailController.prototype = _.extend(BaseController.prototype, {
-    getFullGamesDetail: function (Account) { 
+    getFullGamesDetail: function (Redis, Account) { 
         var self = this;
         var games = Account.getGamesList();
         var promises = [];
@@ -18,7 +18,7 @@ GamesDetailController.prototype = _.extend(BaseController.prototype, {
         for (var i = 0; i < games.length; i++) {
             (function(i) {
                 promises.push(
-                    self.getAppDetails(games[i]['appid'])
+                    self.getAppDetails(Redis, games[i]['appid'])
                 );
             }(i));
         }
@@ -31,14 +31,15 @@ GamesDetailController.prototype = _.extend(BaseController.prototype, {
                 var value = promise[i]['value'];
 
                 if(promise[i]['state'] === 'fulfilled' && value) {
-                    var priceOverview = value['price_overview'] ? value['price_overview'] : { currency: 'USD', inital: 0, 'final': 0, discount_percent: 0};
+                    var priceOverview = value['price_overview'] ? value['price_overview'] : { currency: 'USD', initial: 0, 'final': 0, discount_percent: 0};
                     var platforms = value['platforms'] ? value['platforms'] : {};
                     var metacritic = value['metacritic'] ? value['metacritic'] : { score: -1 };
                     var categories = value['categories'] ? value['categories'] : {};
                     var genres = value['genres'] ? value['genres'] : {};
                     var background = value['background'] ? value['background'] : {};      
                     
-                    costTotal += priceOverview['final'];
+                    // final cost may contain discount value
+                    costTotal += priceOverview['initial'];
 
                     gamesDetailData.push({
                         id: value['steam_appid'],
@@ -71,13 +72,24 @@ GamesDetailController.prototype = _.extend(BaseController.prototype, {
     },
 
 
-    getAppDetails: function (appId) {
-        var url = URL.getAppDetails(appId);
+    getAppDetails: function (Redis, appId) {
+        var self = this;
 
-        return this.sendRequest(url).then(function (body) {
-            var body = JSON.parse(body);
-            return body[appId]['data'];
-        });
+        return Redis.getCache(appId)
+            .then(function (body) {
+                return JSON.parse(body);
+            },
+            function () {
+                var url = URL.getAppDetails(appId);
+
+                return self.sendRequest(url).then(function (body) {
+                    var body = JSON.parse(body);
+                    return body[appId]['data'];
+                })
+                .then(function (data) {
+                    return Redis.setCache(appId, data);
+                });
+            });
     }
 });
 

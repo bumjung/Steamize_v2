@@ -3,7 +3,7 @@
 var Q = require('q');
 var _ = require('underscore');
 
-var routes = function (app, router, Account, AccountController, ProfileController, FriendsController, GamesController, GamesDetailController) {
+var routes = function (app, router, Redis, Account, AccountController, ProfileController, FriendsController, GamesController, GamesDetailController) {
 	// application -------------------------------------------------------------
 	app.get('/', function (req, res) {
 	    res.render('index');
@@ -55,7 +55,7 @@ var routes = function (app, router, Account, AccountController, ProfileControlle
 
     router.route('/id/:steam_id/gameDetails')
         .get(function (req,res){
-            GamesDetailController.getFullGamesDetail(Account)
+            GamesDetailController.getFullGamesDetail(Redis, Account)
                 .then(function (response) {
                     res.json(response);
                 });

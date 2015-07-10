@@ -79,6 +79,7 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 	            	}
 	                return {
 	                    name: arr['value']['name'],
+	                    playtime_2weeks: arr['value']['playtime_2weeks'],
 	                    playtime_forever: arr['value']['playtime_forever'],
 	                    appId: arr['value']['appId'],
 	                    achievements: {
@@ -102,6 +103,7 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 	        var body = JSON.parse(body);
 	        var response = {
 	            name: body['playerstats']['gameName'],
+	            playtime_2weeks: game['playtime_2weeks'] ? game['playtime_2weeks'] : 0,
 	            playtime_forever: game['playtime_forever'],
 	            appId: game['appid']
 	        };
@@ -180,6 +182,7 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 
 			newUserGameSchema['games'].push({
 				name: userGameSchemas[i]['name'],
+				playTimeTwoWeeks: userGameSchemas[i]['playtime_2weeks'],
 				playTimeForever: userGameSchemas[i]['playtime_forever'],
 				achievementCount: userGameSchemas[i]['achievements']['completed'].length + userGameSchemas[i]['achievements']['uncompleted'].length,
 				demoAchievements: demoAchievements

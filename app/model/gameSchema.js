@@ -15,4 +15,4 @@ var achievementSchema = new Schema({
 
 var GameSchema = mongoose.model('Schema', achievementSchema);
 
-module.exports = GameSchema
+module.exports = GameSchema;
