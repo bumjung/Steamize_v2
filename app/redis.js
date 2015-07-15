@@ -4,15 +4,19 @@ var Q = require('q');
 
 var Redis = function (client) {
 	this.client = client;
+	this.EXPIRE_TIME = 10;
 };
 
-Redis.EXPIRE_TIME = 60 * 60 * 24;
+Redis.prototype.setExpireTime = function (time) {
+	this.EXPIRE_TIME = time;
+}
 
 Redis.prototype.setCache = function (key, value) {
 	var deferred = Q.defer();
+	var self = this;
 
-	this.client.setex(key, Redis.EXPIRE_TIME, JSON.stringify(value), function () {
-		deferred.resolve(true);
+	this.client.setex(key, self.EXPIRE_TIME, value, function () {
+		deferred.resolve(value);
 	});
 
 	return deferred.promise;

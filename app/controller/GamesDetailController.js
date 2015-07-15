@@ -6,11 +6,13 @@ var _ = require('underscore');
 var BaseController = require('./BaseController');
 var URL = require('../../config/steamUrl');
 
-var GamesDetailController = function () {
+var GamesDetailController = function (Redis) {
+    this.Redis = Redis;
+    this.Redis.setExpireTime(60 * 60 * 24);
 };
 
 GamesDetailController.prototype = _.extend(BaseController.prototype, {
-    getFullGamesDetail: function (Redis, Account) { 
+    getFullGamesDetail: function (Account) { 
         var self = this;
         var games = Account.getGamesList();
         var promises = [];
@@ -18,7 +20,7 @@ GamesDetailController.prototype = _.extend(BaseController.prototype, {
         for (var i = 0; i < games.length; i++) {
             (function(i) {
                 promises.push(
-                    self.getAppDetails(Redis, games[i]['appid'])
+                    self.getAppDetails(games[i]['appid'])
                 );
             }(i));
         }
@@ -72,24 +74,14 @@ GamesDetailController.prototype = _.extend(BaseController.prototype, {
     },
 
 
-    getAppDetails: function (Redis, appId) {
+    getAppDetails: function (appId) {
         var self = this;
+        var url = URL.getAppDetails(appId);
 
-        return Redis.getCache(appId)
-            .then(function (body) {
-                return JSON.parse(body);
-            },
-            function () {
-                var url = URL.getAppDetails(appId);
-
-                return self.sendRequest(url).then(function (body) {
-                    var body = JSON.parse(body);
-                    return body[appId]['data'];
-                })
-                .then(function (data) {
-                    return Redis.setCache(appId, data);
-                });
-            });
+        return self.sendRequest(url, 'getAppDetails_'+appId).then(function (body) {
+            var body = JSON.parse(body);
+            return body[appId]['data'];
+        });
     }
 });
 

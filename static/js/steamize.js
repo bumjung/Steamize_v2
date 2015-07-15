@@ -29,7 +29,6 @@ define([
 			});
 
 		$.when(gamesPromise, gamesDetailPromise).done(function (games, gamesDetail) {
-			
 			if(games['success'] === 1 && gamesDetail['success'] === 1) {
 				var result = {
 					success: 1,
@@ -43,7 +42,6 @@ define([
 				data['totalCost'] = gamesDetail['view']['data']['totalCost'];
 
 				result['view']['data'] = data;
-				console.log(result);
 				summaryView.update(result);
 			} else {
 				console.log('err');

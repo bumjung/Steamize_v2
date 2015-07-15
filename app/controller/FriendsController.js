@@ -6,7 +6,8 @@ var _ = require('underscore');
 var BaseController = require('./BaseController');
 var URL = require('../../config/steamUrl');
 
-var FriendsController = function () {
+var FriendsController = function (Redis) {
+    this.Redis = Redis;
 };
 
 FriendsController.prototype = _.extend(BaseController.prototype, {

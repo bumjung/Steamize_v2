@@ -6,14 +6,15 @@ var _ = require('underscore');
 var BaseController = require('./BaseController');
 var URL = require('../../config/steamUrl');
 
-var ProfileController = function () {
+var ProfileController = function (Redis) {
+    this.Redis = Redis;
 };
 
 ProfileController.prototype = _.extend(BaseController.prototype, {
 	getPlayerSummaries: function (steamId) {
         var url = URL.getPlayerSummaries(steamId);
         
-        return this.sendRequest(url).then(function (body) {
+        return this.sendRequest(url, 'getPlayerSummaries_'+steamId).then(function (body) {
             body = JSON.parse(body);
 
             if (body['response'] && body['response']['players'].length === 1) {

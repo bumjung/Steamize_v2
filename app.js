@@ -45,14 +45,14 @@ app.use(methodOverride());
 
 // constructors ================================================================
 var account = new Account();
-var accountController = new AccountController();
-var profileController = new ProfileController();
-var gamesController = new GamesController();
-var friendsController = new FriendsController();
-var gamesDetailController = new GamesDetailController();
+var accountController = new AccountController(redis);
+var profileController = new ProfileController(redis);
+var gamesController = new GamesController(redis);
+var friendsController = new FriendsController(redis);
+var gamesDetailController = new GamesDetailController(redis);
 
 // routes ======================================================================
-require('./app/routes')(app, router, redis, account, accountController, profileController, friendsController, gamesController, gamesDetailController);
+require('./app/routes')(app, router, account, accountController, profileController, friendsController, gamesController, gamesDetailController);
 
 // listen ======================================================================
 app.listen(app.get('port'));

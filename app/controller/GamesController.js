@@ -8,7 +8,9 @@ var database = require('../database');
 var URL = require('../../config/steamUrl');
 var Helper = require('../helper.js');
 
-var GamesController = function () {
+var GamesController = function (Redis) {
+	this.Redis = Redis;
+	this.Redis.setExpireTime(60 * 60 * 1);
 	this.MAX_DEMO_ACHIEVEMENTS = 5;
 };
 
@@ -99,7 +101,7 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 	getPlayerAchievements: function (game, steamId) {
 	    var url = URL.getPlayerAchievements(game['appid'], steamId);
 
-	    return this.sendRequest(url).then(function (body) {
+	    return this.sendRequest(url, 'getPlayerAchievements_'+game+'_'+steamId).then(function (body) {
 	        var body = JSON.parse(body);
 	        var response = {
 	            name: body['playerstats']['gameName'],
