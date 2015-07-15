@@ -1,0 +1,29 @@
+<!-- public/index.html -->
+<!doctype html>
+<html lang="en">
+	<% include ./header %>
+	<body data-name="steamize">
+		<div id="appContainer">
+
+			<div class="header">
+				<div class="steamize">
+					<div class="logo"><img src=""/></div>
+					<span> Steamize</span>
+				</div><!--
+				--><div class="steamIdInput">
+					<input type="text" name="steamIdInput" placeholder="Type username or id to search"/>
+				</div>
+			</div>
+
+			<section id="userInfoContainer">
+				<div class="userInfo"></div>
+				<div class="userSummary"></div>
+			</section><!--
+			--><section id="gamesContainer">
+				<div id="imageContainer"></div>
+			</section>
+		</div>
+		<% include ./basic_scripts %>
+		<% include ./variable_setup %>
+	</body>
+</html>

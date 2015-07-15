@@ -1,14 +1,14 @@
 define([
-	'./summary.js'], function(summary) {
+	'./steamize.js'], function(steamize) {
 	var startup = {
 		load: function (sz) {
 			var fcn = this[$('body').data('name')];
 			fcn(sz);
 		},
 
-		summary: function (sz) {
+		steamize: function (sz) {
 			$(document).ready(function () {
-				summary.init(sz.summary);
+				steamize.init(sz.steamize);
 			});
 		},
 

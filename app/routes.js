@@ -16,7 +16,7 @@ var routes = function (app, router, Redis, Account, AccountController, ProfileCo
 
         Account._init(req.params.steam_id, AccountController)
             .then(function () {
-                res.render('summary', {view: data});
+                res.render('steamize', {view: data});
             });
     });
 

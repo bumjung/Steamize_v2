@@ -4,4 +4,4 @@ dump.rdb
 /node_modules
 /config
 /dist
-/src/third_party
+static/css

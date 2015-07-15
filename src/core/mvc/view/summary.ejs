@@ -1,17 +1,12 @@
-<!-- public/index.html -->
-<!doctype html>
-<html lang="en">
-	<% include ./header %>
-	<body data-name="summary">
-		<div class="profileContainer">
-		</div>
-		<div class="friendsContainer">
-		</div>
-		<div class="gamesContainer">
-		</div>
-		<div class="gamesDetailContainer">
-		</div>
-		<% include ./basic_scripts %>
-		<% include ./variable_setup %>
-	</body>
-</html>
+<div class="hoursContainer">
+<span class="hours"><%= totalPlayedTime %></span>
+<span class="placeholder">Hours played</span>
+</div>
+<div class="spentContainer">
+<span class="money">$ <%= totalCost %></span>
+<span class="placeholder">Spent on games</span>
+</div>
+<div class="achievementsContainer">
+<span class="achievements"><%= totalAchievementsCompleted %></span>
+<span class="placeholder">Achievements</span>
+</div>

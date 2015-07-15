@@ -181,6 +181,7 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 
 
 			newUserGameSchema['games'].push({
+				appId: userGameSchemas[i]['appId'],
 				name: userGameSchemas[i]['name'],
 				playTimeTwoWeeks: userGameSchemas[i]['playtime_2weeks'],
 				playTimeForever: userGameSchemas[i]['playtime_forever'],

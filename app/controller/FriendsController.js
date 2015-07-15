@@ -16,41 +16,30 @@ FriendsController.prototype = _.extend(BaseController.prototype, {
             
         return this.sendRequest(url).then(function (body) {
             body = JSON.parse(body);
+            var friends = [];
 
             if (body && body['friendslist']) {
                 var list = body['friendslist']['friends'];
 
-                var promises = [];
-
                 for (var i = 0; i < list.length; i++) {
-                    (function (i) {
-                        if (list[i]['relationship'] === 'friend') {
-                            promises.push(
-                                self.getFriendsDetails(list[i]['steamid'])
-                            );
-                        }
-                    }(i));
+                    if (list[i]['relationship'] === 'friend') {
+                        friends.push(list[i]['steamid']);
+                    }
                 }
             }
-            
-            return Q.allSettled(promises);
+
+            return self.getFriendsDetails(friends.join());
         }).then(function (promise) {
             var result = [];
 
-            for(var i = 0; i < promise.length; i++) {
-                if (promise[i]['state'] === 'fulfilled') {
-                    result.push(promise[i]['value'])
-                }
-            }
-
-            if (result.length > 0) {
+            if (promise.length > 0) {
                 return {
                     success: 1,
                     view: {
-                        data: { friends: result },
+                        data: { friends: promise },
                         template: '/src/core/mvc/view/friends.ejs'
                     }
-                };
+                }
             } else {
                 return { success: 0 };
             }
@@ -64,8 +53,8 @@ FriendsController.prototype = _.extend(BaseController.prototype, {
             body = JSON.parse(body);
             var response = {};
 
-            if (body['response'] && body['response']['players'].length === 1) {
-                response = body['response']['players'][0];
+            if (body['response'] && body['response']['players'].length > 0) {
+                response = body['response']['players'];
             }
 
             return response;

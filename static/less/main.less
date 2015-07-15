@@ -1,5 +1,119 @@
-@darkBGrey: #333A44;
-@bGrey: #272E38;
-html, body {
-	height:100%;
+@import "colors";
+@import "variables";
+
+body {
+	background-color: @darkGrey;
+}
+
+#appContainer {
+	position: relative;
+	margin: 20px auto;
+	width: @userInfoContainerWidth + @gamesContainerWidth;
+	color: @white;
+
+	.header {
+		.steamize, .steamIdInput {
+			display: inline-block;
+			font-size: 24px;
+
+			.logo {
+				width: @logoDimensions;
+				height: @logoDimensions;
+				margin: -9px 15px 0 0;
+				border-radius: 50%;
+				background-color: @midGrey;
+				float: left;
+			}	
+		}
+		.steamize {
+			width: @userInfoContainerWidth;
+		}
+		.steamIdInput {
+			position:relative;
+			width: @gamesContainerWidth;
+
+			input {
+				font-size: 13px;
+				width: (@gamesContainerWidth - 39px);
+				height: 41px;
+				margin: 0 0 16px 0;
+				padding: 0 0 0 39px;
+				border: 0;
+				border-radius: 3px;
+				background-color: @lightGrey;
+				background-image:url('http://png-4.findicons.com/files/icons/1389/g5_system/32/toolbar_find.png');
+				background-repeat:no-repeat;
+				background-position:left center;outline:0;
+			}
+		}
+	}
+
+	#userInfoContainer, #gamesContainer {
+		display: inline-block;
+	}
+
+	#userInfoContainer {
+		width: @userInfoContainerWidth;
+		float: left;
+
+		.userInfo {
+			margin: 0 0 22px 0;
+			height: @avatarDimensions;
+
+			.avatar {
+				float: left;
+				width: @avatarDimensions;
+				height: @avatarDimensions;
+				margin: 0 10px 0 0;
+				border-radius: 50%;
+			}
+			.name {
+				font-size: 18px;
+			}
+			.location {
+				font-size: 14px;
+				color: @fontGrey;
+			}
+		}
+		.userSummary {
+			font-size: 32px;
+
+			.placeholder {
+				display: block;
+				font-size: 14px;
+				color: @placeholder;
+				margin: 0 0 13px 0;
+			}
+		}
+	}
+
+	#gamesContainer {
+		#imageContainer {
+		  width: @gamesContainerWidth;
+
+			> div {
+				margin: @imgContainerMargin;
+			}
+			.imgLarge, .imgNormal {
+				display:inline-block;
+				background-repeat: no-repeat;
+				background-attachment: center center;
+				background-position: fixed;
+				-webkit-background-size: cover;
+				-moz-background-size: cover;
+				-o-background-size: cover;
+				background-size: cover;
+			}
+			.imgLarge {
+				width: @imgWidthLarge;
+				height: @imgHeightLarge;
+				float: left;
+			}
+			.imgNormal {
+				width: @imgWidthNormal;
+				height: @imgHeightNormal;
+				float: right;
+			}
+		}
+	}
 }

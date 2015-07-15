@@ -2,7 +2,7 @@ define([], function () {
 	'use strict';
 
 	var view = function (name) {
-		this.el = '.'+name+'Container';
+		this.el = name;
        	$(this.el).html('waiting...');
 	};
 

@@ -1,16 +1,8 @@
-<ul>
-	<li> Total Played Time: <%= totalPlayedTime %> hours </li>
-	<li>Total Completed Achievements: <%= totalAchievementsCompleted %></li>
-<% for (var i = 0; i < games.length; i++) { %>
-	<li> <%= games[i]['name'] %> : <%= games[i]['playTimeForever'] %> minutes </li>
-	<li> Two weeks: <%= games[i]['playTimeTwoWeeks'] %> minutes </li>
-	<li> Total Achievements : <%= games[i]['achievementCount'] %> </li>
-	<li>
-		<ul>
-		<% for (var j = 0; j < games[i]['demoAchievements'].length; j++) { %>
-			<li><%= games[i]['demoAchievements'][j]['displayName'] %>: <%= games[i]['demoAchievements'][j]['achieved'] %></li>
-		<% } %>
-		</ul>
-	</li>
+<% for (var i = 0; i < 3; i ++) { %>
+	<div class="imgLarge" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[i]['appId'] %>/header.jpg")'></div>
+	<div class="imgNormal" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[(i*2)+3]['appId'] %>/header.jpg")'></div>
+	<div class="imgNormal" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[(i*2)+4]['appId'] %>/header.jpg")'></div>
 <% } %>
-</ul>
+<% for (var i = 9; i < 15; i ++) { %>
+	<div class="imgNormal" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[i]['appId'] %>/header.jpg")'></div>
+<% } %>
