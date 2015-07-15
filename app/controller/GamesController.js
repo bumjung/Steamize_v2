@@ -15,7 +15,6 @@ var GamesController = function (Redis) {
 };
 
 GamesController.prototype = _.extend(BaseController.prototype, {
-
 	getFullGameSchema: function (Account) {
 		var self = this;
         var games = Account.getGamesList();
@@ -44,6 +43,8 @@ GamesController.prototype = _.extend(BaseController.prototype, {
             }
             if (cleanSchemas.length > 0) {
                 cleanSchemas = self.formatGamesJSON(cleanSchemas);
+
+                // TODO: combine JSON with GamesDetailController into 1 big awesome data
 
                 return {
                     success: 1,
@@ -101,7 +102,7 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 	getPlayerAchievements: function (game, steamId) {
 	    var url = URL.getPlayerAchievements(game['appid'], steamId);
 
-	    return this.sendRequest(url, 'getPlayerAchievements_'+game+'_'+steamId).then(function (body) {
+	    return this.sendRequest(url, 'getPlayerAchievements_'+game['appid']+'_'+steamId).then(function (body) {
 	        var body = JSON.parse(body);
 	        var response = {
 	            name: body['playerstats']['gameName'],
