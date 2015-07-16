@@ -44,17 +44,12 @@ GamesController.prototype = _.extend(BaseController.prototype, {
             if (cleanSchemas.length > 0) {
                 cleanSchemas = self.formatGamesJSON(cleanSchemas);
 
-                // TODO: combine JSON with GamesDetailController into 1 big awesome data
-
                 return {
                     success: 1,
-                    view: {
-                        data: { 
-                            games: cleanSchemas['games'],
-                            totalPlayedTime: (cleanSchemas['totalPlayedTime']/60),
-                            totalAchievementsCompleted: cleanSchemas['totalAchievementsCompleted']
-                        },
-                        template: '/src/core/mvc/view/games.ejs'
+                    data: { 
+                        games: cleanSchemas['games'],
+                        totalPlayedTime: cleanSchemas['totalPlayedTime'],
+                        totalAchievementsCompleted: cleanSchemas['totalAchievementsCompleted']
                     }
                 };
             } else {
@@ -88,7 +83,8 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 	                    achievements: {
 	                        completed: completedAchievements,
 	                        uncompleted: uncompletedAchievements
-	                    }
+	                    },
+	                    totalAchievementsCompleted: completedAchievements.length
 	                };
 	            });
 	        } else {
@@ -186,14 +182,15 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 			newUserGameSchema['games'].push({
 				appId: userGameSchemas[i]['appId'],
 				name: userGameSchemas[i]['name'],
-				playTimeTwoWeeks: userGameSchemas[i]['playtime_2weeks'],
-				playTimeForever: userGameSchemas[i]['playtime_forever'],
-				achievementCount: userGameSchemas[i]['achievements']['completed'].length + userGameSchemas[i]['achievements']['uncompleted'].length,
+				playTimeTwoWeeks: Math.round(userGameSchemas[i]['playtime_2weeks']/60 * 10) / 10,
+				playTimeForever: Math.round(userGameSchemas[i]['playtime_forever']/60 * 10) / 10,
+				totalAchievementsCompleted: userGameSchemas[i]['achievements']['completed'].length,
+				totalAchievements: userGameSchemas[i]['achievements']['completed'].length + userGameSchemas[i]['achievements']['uncompleted'].length,
 				demoAchievements: demoAchievements
 			});
 		}
 
-		newUserGameSchema['totalPlayedTime'] = totalPlayedTime;
+		newUserGameSchema['totalPlayedTime'] = Math.round(totalPlayedTime/60 * 10) / 10;
 		newUserGameSchema['totalAchievementsCompleted'] = totalAchievementsCompleted;
 		return newUserGameSchema;
 	}

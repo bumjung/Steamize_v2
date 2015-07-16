@@ -7,6 +7,24 @@ define([
 	var steamize = {};
 
 	steamize.init = function(data) {
+		this.render(data)
+			.then(function() {
+				var imageSelector = $('#imageContainer').find('._img');
+				for (var i = 0; i < imageSelector.length; i++) {
+					$(imageSelector[i]).on('mouseenter', function () {
+						var gamesDetail = $(this).children('._gamesDetail');
+						gamesDetail.removeClass('hide');
+					});
+					$(imageSelector[i]).on('mouseleave', function () {
+						var gamesDetail = $(this).children('._gamesDetail');
+
+						gamesDetail.addClass('hide');
+					});
+				}
+			});
+	}
+
+	steamize.render = function (data) {
 		$.extend(steamize, data);
 		var profileView = new View('.userInfo');
 		var gamesView = new View('#imageContainer');
@@ -17,36 +35,24 @@ define([
 				profileView.update(data);
 			});
 
-		var gamesPromise = steamize.getGamesData(steamize.steamId)
+		return steamize.getGamesData(steamize.steamId)
 			.then(function(data) {
 				gamesView.update(data);
-				return data;
-			});
-			
-		var gamesDetailPromise = steamize.getGamesDetailData(steamize.steamId)
-			.then(function(data) {
-				return data;
-			});
-
-		$.when(gamesPromise, gamesDetailPromise).done(function (games, gamesDetail) {
-			if(games['success'] === 1 && gamesDetail['success'] === 1) {
 				var result = {
 					success: 1,
 					view: {
 						template: '/src/core/mvc/view/summary.ejs'
 					}
 				}
-				var data = {};
-				data['totalAchievementsCompleted'] = games['view']['data']['totalAchievementsCompleted'];
-				data['totalPlayedTime'] = games['view']['data']['totalPlayedTime'];
-				data['totalCost'] = gamesDetail['view']['data']['totalCost'];
+				var summary = {};
 
-				result['view']['data'] = data;
-				summaryView.update(result);
-			} else {
-				console.log('err');
-			}
-		});
+				summary['totalAchievementsCompleted'] = data['view']['data']['totalAchievementsCompleted'];
+				summary['totalPlayedTime'] = data['view']['data']['totalPlayedTime'];
+				summary['totalCost'] = data['view']['data']['totalCost'];
+				result['view']['data'] = summary;
+
+				return summaryView.update(result);
+			});
 	}
 
 	steamize.getProfileData = function(steamId) {
@@ -59,10 +65,6 @@ define([
 
 	steamize.getGamesData = function(steamId) {
 		return smz.request('/api/id/'+steamId+'/games');
-	}
-
-	steamize.getGamesDetailData = function(steamId) {
-		return smz.request('/api/id/'+steamId+'/gameDetails')
 	}
 
 

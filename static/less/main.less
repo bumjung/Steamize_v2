@@ -1,5 +1,6 @@
 @import "colors";
 @import "variables";
+@import "helper";
 
 body {
 	background-color: @darkGrey;
@@ -95,6 +96,41 @@ body {
 			> div {
 				margin: @imgContainerMargin;
 			}
+
+			.gamesDetail {
+				position: relative;
+				width: 100%;
+				height: 100%;
+				background: -webkit-gradient(linear, left top, right top, from(rgba(74, 155, 184, 0.43)), to(#514faa));
+				background: -webkit-linear-gradient(left, rgba(74, 155, 184, 0.43), #514faa);
+				background: -moz-linear-gradient(left, rgba(74, 155, 184, 0.43), #514faa);
+				background: -ms-linear-gradient(left, rgba(74, 155, 184, 0.43), #514faa);
+				background: -o-linear-gradient(left, rgba(74, 155, 184, 0.43), #514faa);
+				font-size: 18px;
+
+				.bottom {
+					position: absolute;
+					width: 100%;
+
+					.name {
+						margin: 0 14px 0 15px;
+					}
+					.hours {
+						margin: 0 2px 0 0;
+						font-size: 14px;
+					}
+					.achievements {
+						font-size: 14px;
+					}
+					.cost {
+						float: right;
+						padding: 5px 9px 6px 7px;
+						margin: 0 7px 0 0;
+						background-color: @costBackground;
+						font-size: 16px;
+					}
+				}
+			}
 			.imgLarge, .imgNormal {
 				display:inline-block;
 				background-repeat: no-repeat;
@@ -109,11 +145,47 @@ body {
 				width: @imgWidthLarge;
 				height: @imgHeightLarge;
 				float: left;
+
+				.gamesDetail {
+					.bottom {
+						bottom: 10px;
+					}
+				}
 			}
 			.imgNormal {
 				width: @imgWidthNormal;
 				height: @imgHeightNormal;
 				float: right;
+
+				.discount {
+					position: relative;
+					width: 100%;
+					height: 100%;
+
+					> span {
+						background-color: @discountBackground;
+						position: absolute;
+						bottom: 6.3px;
+						right: 7px;
+						font-size: 16px;
+						padding: 2px 6px 4px 11px;
+					}
+				}
+				.gamesDetail {
+					.bottom {
+						bottom: 0px;
+					}
+					.name {
+						display: block;
+						margin: 0 0 10.7px 9px;
+					}
+					.hours {
+						margin: 0 0 0 11px;
+					}
+					.cost {
+						margin: 0 5px 6px 0;
+					}
+				}
 			}
 		}
 	}

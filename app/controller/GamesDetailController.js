@@ -26,7 +26,7 @@ GamesDetailController.prototype = _.extend(BaseController.prototype, {
         }
 
         return Q.allSettled(promises).then(function (promise) {
-            var gamesDetailData = [];
+            var gamesDetailData = {};
             var costTotal = 0;
 
             for(var i = 0; i < promise.length; i++) {
@@ -34,6 +34,8 @@ GamesDetailController.prototype = _.extend(BaseController.prototype, {
 
                 if(promise[i]['state'] === 'fulfilled' && value) {
                     var priceOverview = value['price_overview'] ? value['price_overview'] : { currency: 'USD', initial: 0, 'final': 0, discount_percent: 0};
+                    priceOverview['initial'] /= 100;
+                    priceOverview['final'] /= 100; 
                     var platforms = value['platforms'] ? value['platforms'] : {};
                     var metacritic = value['metacritic'] ? value['metacritic'] : { score: -1 };
                     var categories = value['categories'] ? value['categories'] : {};
@@ -43,8 +45,7 @@ GamesDetailController.prototype = _.extend(BaseController.prototype, {
                     // final cost may contain discount value
                     costTotal += priceOverview['initial'];
 
-                    gamesDetailData.push({
-                        id: value['steam_appid'],
+                    gamesDetailData[value['steam_appid']] = {
                         name: value['name'],
                         priceOverview: priceOverview,
                         platforms: platforms,
@@ -52,19 +53,16 @@ GamesDetailController.prototype = _.extend(BaseController.prototype, {
                         categories: categories,
                         genres: genres,
                         background: background
-                    });
+                    };
                 }
             };
 
-            if(gamesDetailData.length > 0) {
+            if (!_.isEmpty(gamesDetailData)) {
                 return {
                     success: 1,
-                    view: {
-                        data: { 
-                            gamesDetail: gamesDetailData,
-                            totalCost: (costTotal/100)
-                        },
-                        template: '/src/core/mvc/view/gamesDetail.ejs'
+                    data: { 
+                        gamesDetail: gamesDetailData,
+                        totalCost: Math.round(costTotal * 100) / 100
                     }
                 };
             } else {
