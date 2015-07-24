@@ -5,15 +5,17 @@
 	<body data-name="steamize">
 		<div id="appContainer">
 
-			<div class="header">
+			<section class="header">
 				<div class="steamize">
 					<div class="logo"><img src=""/></div>
 					<span> Steamize</span>
 				</div><!--
 				--><div class="steamIdInput">
-					<input type="text" name="steamIdInput" placeholder="Type username or id to search"/>
+						<form method="POST" id="steamIDForm">
+							<input type="text" class="steamIDInput" name="steamIDInput" placeholder="Type username or id to search"/>
+						</form>
 				</div>
-			</div>
+			</section>
 
 			<section id="userInfoContainer">
 				<div class="userInfo"></div>
@@ -21,6 +23,15 @@
 			</section><!--
 			--><section id="gamesContainer">
 				<div id="imageContainer"></div>
+				<div class="moreGames"></div>
+
+				<section class="footer">
+					<span class="line"></span>
+					<div class="extra">
+						<span class="about _about">About</span>
+						<span class="policy _policy">Privacy Policy</span>
+					</div>
+				</section>
 			</section>
 		</div>
 		<% include ./basic_scripts %>

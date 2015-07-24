@@ -1,0 +1,23 @@
+<% for (var i = 0; i < games.length; i ++) { %>
+	<div class="_img imgNormal" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[i]['appId'] %>/header.jpg")'>
+		<div class="discount hide">
+			<% if (games[i]['priceOverview']['discount_percent'] > 0) { %>
+				<span>-<%= games[i]['priceOverview']['discount_percent'] %>%</span>
+			<% } %>
+		</div>
+		<div class="gamesDetail _gamesDetail hide">
+			<div class="bottom">
+				<span class="name"><%= games[i]['name'] %></span>
+				<span class="hours"><%= games[i]['playTimeForever'] %>h</span>
+				<% if (games[i]['totalAchievements'] > 0) { %>
+					<span class="achievements"><%= games[i]['totalAchievementsCompleted'] %>/<%= games[i]['totalAchievements'] %></span>
+				<% } %>
+				<% if (games[i]['priceOverview']['final'] > 0) { %>
+					<span class="cost">$<%= games[i]['priceOverview']['final'] %></span>
+				<% } else { %>
+					<span class="cost">FREE</span>
+				<% } %>
+			</div>
+		</div>
+	</div>
+<% } %>

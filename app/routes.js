@@ -6,7 +6,7 @@ var _ = require('underscore');
 var routes = function (app, router, Account, AccountController, ProfileController, FriendsController, GamesController, GamesDetailController) {
 	// application -------------------------------------------------------------
 	app.get('/', function (req, res) {
-	    res.render('index');
+	    res.render('index', {view:{}});
 	});
 
     app.get('/:steam_id', function(req, res) {

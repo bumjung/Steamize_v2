@@ -16,7 +16,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="_img imgNormal" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[(i*2)+3]['appId'] %>/header.jpg")'>
+	<div class="_img imgNormal right" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[(i*2)+3]['appId'] %>/header.jpg")'>
 		<div class="discount hide">
 			<% if (games[(i*2)+3]['priceOverview']['discount_percent'] > 0) { %>
 				<span>-<%= games[(i*2)+3]['priceOverview']['discount_percent'] %>%</span>
@@ -37,7 +37,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="_img imgNormal" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[(i*2)+4]['appId'] %>/header.jpg")'>
+	<div class="_img imgNormal right" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[(i*2)+4]['appId'] %>/header.jpg")'>
 		<div class="discount hide">
 			<% if (games[(i*2)+4]['priceOverview']['discount_percent'] > 0) { %>
 				<span>-<%= games[(i*2)+4]['priceOverview']['discount_percent'] %>%</span>
@@ -60,7 +60,7 @@
 	</div>
 <% } %>
 <% for (var i = 9; i < 15; i ++) { %>
-	<div class="_img imgNormal" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[i]['appId'] %>/header.jpg")'>
+	<div class="_img imgNormal left" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[i]['appId'] %>/header.jpg")'>
 		<div class="discount hide">
 			<% if (games[i]['priceOverview']['discount_percent'] > 0) { %>
 				<span>-<%= games[i]['priceOverview']['discount_percent'] %>%</span>

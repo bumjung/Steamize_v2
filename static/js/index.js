@@ -1,16 +1,14 @@
-define([], function () {
+define([
+	'./smz.js'
+	], function (smz) {
 	'use strict';
 
 	var index = {};
 
-	index.init = function(data){
+	index.init = function (data) {
 		$.extend(index, data);
+		smz.initSubmit();
 	}
 
-	index.submit = function(steamID) {
-			var submitForm = $('#steamIDForm');
-			var submitInput = submitForm.find('.steamIDInput');
-
-			window.location.href = '/id/'+submitInput.val();
-		}
+	return index;
 });

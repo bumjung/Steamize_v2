@@ -1,5 +1,7 @@
 define([
-	'./steamize.js'], function(steamize) {
+	'./index.js',
+	'./steamize.js'
+	], function(index, steamize) {
 	var startup = {
 		load: function (sz) {
 			var fcn = this[$('body').data('name')];
@@ -12,7 +14,7 @@ define([
 			});
 		},
 
-		index: function () {
+		index: function (sz) {
 			$(document).ready(function () {
 				index.init(sz.index);
 			});

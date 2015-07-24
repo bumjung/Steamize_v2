@@ -4,11 +4,11 @@
 	<% include ./header %>
 	<body data-name="index">
 		<div class="container">
-			<form method="POST" id="steamIDForm" class="" onsubmit="index.submit();">
+			<form method="POST" id="steamIDForm">
 				<input type="text" class="steamIDInput" name="steamIDInput" />
-				<button type="submit" form="steamIDForm" value="Submit">Search</button>
 			</form>
 		</div>
 		<% include ./basic_scripts %>
+		<% include ./variable_setup %>
 	</body>
 </html>

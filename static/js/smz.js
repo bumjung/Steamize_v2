@@ -3,6 +3,21 @@ define([], function () {
 
 	var smz = {};
 
+	smz.initSubmit = function () {
+		var submitForm = $('#steamIDForm');
+		submitForm.on('submit', function (e) {
+			e.preventDefault();
+			smz.submit();
+		});
+	}
+
+	smz.submit = function () {
+		var submitForm = $('#steamIDForm');
+		var submitInput = submitForm.find('.steamIDInput');
+
+		window.location.href = '/'+submitInput.val();
+	}
+
 	smz.request = function (url, method) {
 		var dfd = $.Deferred();
 

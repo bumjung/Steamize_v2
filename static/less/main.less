@@ -6,6 +6,14 @@ body {
 	background-color: @darkGrey;
 }
 
+.right {
+	float: right!important;
+}
+
+.left {
+	float: left!important;
+}
+
 #appContainer {
 	position: relative;
 	margin: 20px auto;
@@ -92,6 +100,7 @@ body {
 	#gamesContainer {
 		#imageContainer {
 		  width: @gamesContainerWidth;
+		  display: inline-block;
 
 			> div {
 				margin: @imgContainerMargin;
@@ -112,8 +121,17 @@ body {
 					position: absolute;
 					width: 100%;
 
+					& span {
+						vertical-align: bottom;
+						display: inline-block;
+					}
+
 					.name {
-						margin: 0 14px 0 15px;
+						max-width: 50%;
+						margin: 0 14px -1px 15px;
+						white-space: nowrap;
+						overflow:hidden;
+						text-overflow: ellipsis;
 					}
 					.hours {
 						margin: 0 2px 0 0;
@@ -155,7 +173,7 @@ body {
 			.imgNormal {
 				width: @imgWidthNormal;
 				height: @imgHeightNormal;
-				float: right;
+				float: left;
 
 				.discount {
 					position: relative;
@@ -176,6 +194,7 @@ body {
 						bottom: 0px;
 					}
 					.name {
+						max-width: 90%;
 						display: block;
 						margin: 0 0 10.7px 9px;
 					}
@@ -185,6 +204,45 @@ body {
 					.cost {
 						margin: 0 5px 6px 0;
 					}
+				}
+			}
+		}
+
+		.moreGames {
+			text-align: center;
+			margin: 11.1px 0;
+			font-size: 16px;
+
+			.loadMore {
+				display: block;
+				cursor: pointer;
+				margin: 0 0 6.8px 0;
+			}
+			.gamesCount {
+				font-size: 14px;
+				color: @gamesCount;
+			}
+		}
+
+		.footer {
+			position: relative;
+			width: @gamesContainerWidth;
+			margin: 0 auto;
+
+			.line {
+				display:block;
+				border: 1px solid @line;
+			}
+
+			.extra {
+				margin: 3.5px 0 0 0;
+				font-size: 12px;
+				color: @extra;
+				float: right;
+
+				.about {
+					display: inline-block;
+					margin: 0 9px 0 0;
 				}
 			}
 		}
