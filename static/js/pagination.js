@@ -16,19 +16,24 @@ define([
 		pagination.setData(data);
 		pagination.setIndex(15);
 		pagination.games = games;
-		pagination.loadMoreView = new View('.moreGames');
+		pagination.view = new View('.moreGames');
 
 		pagination.updateLoadMore();
 	}
 
 	pagination.render = function (data) {
+		var view = pagination.view;
+		var pagData = pagination.getData();
 		var data = {
-			gamesLength: pagination.getData()['view']['data']['games'].length,
+			gamesLength: pagData['view']['data']['games'].length,
 			index: data
 		}
+		
+		view.setTemplate('/src/core/mvc/view/loadMore.ejs');
+		view.setData(data);
+		var response = view.getResponse();
 
-		var response = pagination.createViewResponse('/src/core/mvc/view/loadMore.ejs', data);
-		pagination.loadMoreView.update(response)
+		pagination.view.update(response)
 			.then(function () {
 				$('._loadMore').on('click', function () {
 					pagination.next();
@@ -48,9 +53,12 @@ define([
 	pagination.updateGamesList = function (startPagination) {
 		var data = pagination.getData()['view']['data'];
 		var subGames = data['games'].slice(startPagination, pagination.getIndex());
+		var view = pagination.view;
 
-		var response = pagination.createViewResponse('/src/core/mvc/view/gamesMore.ejs', { games: subGames });
-		
+		view.setTemplate('/src/core/mvc/view/gamesMore.ejs');
+		view.setData({ games: subGames });
+		var response = view.getResponse();
+
 		pagination.games.loadMore(startPagination, response);
 	}
 

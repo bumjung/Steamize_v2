@@ -9,25 +9,25 @@ define([
 
 	games.init = function () {
 		$.extend(games, base);
-		games.gamesView = new View('#imageContainer');
+		games.view = new View('#imageContainer');
 	}
 
 	games.render = function (data) {
-		var gamesView = games.gamesView;
+		var view = games.view;
 
 		pagination.init(games, data);
 
-		gamesView.update(data)
+		view.update(data)
 			.then(function() {
-				addListenersToImages(0);
+				games.addListenersToImages(0);
 			});
 	}
 
 	games.loadMore = function (startIndex, data) {
-		var gamesView = games.gamesView;
-		gamesView.append(data)
+		var view = games.view;
+		view.append(data)
 			.then(function() {
-				addListenersToImages(startIndex);
+				games.addListenersToImages(startIndex);
 			});
 	}
 

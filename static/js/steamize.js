@@ -38,10 +38,12 @@ define([
 				var summary = {};
 				summary['totalAchievementsCompleted'] = data['view']['data']['totalAchievementsCompleted'];
 				summary['totalPlayedTime'] = data['view']['data']['totalPlayedTime'];
-				summary['totalCost'] = data['view']['data']['totalCost'];
+				summary['totalCost'] = data['view']['data']['totalCost'].toFixed(2);
 				
-				var response = steamize.createViewResponse('/src/core/mvc/view/summary.ejs', summary);
-
+				summaryView.setTemplate('/src/core/mvc/view/summary.ejs');
+				summaryView.setData(summary);
+				var response = summaryView.getResponse();
+				
 				summaryView.update(response);
 			});
 	}
