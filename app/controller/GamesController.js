@@ -99,7 +99,7 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 	    var url = URL.getPlayerAchievements(game['appid'], steamId);
 
 	    return this.sendRequest(url, 'getPlayerAchievements_'+game['appid']+'_'+steamId).then(function (body) {
-	        var body = JSON.parse(body);
+		    var body = JSON.parse(body);
 	        var response = {
 	            name: body['playerstats']['gameName'],
 	            playtime_2weeks: game['playtime_2weeks'] ? game['playtime_2weeks'] : 0,
@@ -113,6 +113,15 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 		        };
 		    }
 	        
+	        return response;
+	    }, function (err) {
+	        var response = {
+	            name: game['name'],
+	            playtime_2weeks: null,
+	            playtime_forever: game['playtime_forever'],
+	            appId: game['appid']
+	        };
+
 	        return response;
 	    });
 	},
@@ -137,8 +146,6 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 
 	                return database.saveGameSchema(response);
 	            });
-	        } else {
-	            return false;
 	        }
 	    });
 	},

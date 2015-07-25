@@ -37,7 +37,7 @@ _.extend(BaseController.prototype, {
 	        if (!error && response.statusCode == 200) {
 	            deferred.resolve(body);
 	        } else {
-	            deferred.reject(false);
+	            deferred.reject(body);
 	        }
 	    });
 

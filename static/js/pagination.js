@@ -14,7 +14,7 @@ define([
 	pagination.init = function (games, data) {
 		$.extend(pagination, base);
 		pagination.setData(data);
-		pagination.setIndex(15);
+		pagination.setIndex(Math.min(data['view']['data']['games'].length, 15));
 		pagination.games = games;
 		pagination.view = new View('.moreGames');
 

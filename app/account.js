@@ -6,7 +6,7 @@ var URL = require('../config/steamUrl');
 
 var Account = function() {
 	this.steamId = null;
-	this.gamesList = [];
+	this.gamesList = {};
 }
 
 _.extend(Account.prototype, {
@@ -30,11 +30,11 @@ _.extend(Account.prototype, {
 	},
 
 	getGamesList: function() {
-		return this.gamesList;
+		return this.gamesList[this.getSteamId()];
 	},
 
 	setGamesList: function(gamesList) {
-		this.gamesList = gamesList;
+		this.gamesList[this.getSteamId()] = gamesList;
 	}
 });
 

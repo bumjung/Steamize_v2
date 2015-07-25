@@ -14,6 +14,11 @@ body {
 	float: left!important;
 }
 
+a {
+	cursor: pointer;
+	text-decoration: none;
+}
+
 #appContainer {
 	position: relative;
 	margin: 20px auto;
@@ -36,6 +41,10 @@ body {
 		}
 		.steamize {
 			width: @userInfoContainerWidth;
+
+			a {
+				color: @white;
+			}
 		}
 		.steamIdInput {
 			position:relative;
@@ -77,6 +86,7 @@ body {
 				border-radius: 50%;
 			}
 			.name {
+				display: block;
 				font-size: 18px;
 			}
 			.location {
@@ -215,7 +225,6 @@ body {
 
 			.loadMore {
 				display: block;
-				cursor: pointer;
 				margin: 0 0 6.8px 0;
 			}
 			.gamesCount {

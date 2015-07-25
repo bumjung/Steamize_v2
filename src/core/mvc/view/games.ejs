@@ -1,5 +1,5 @@
 <!-- TODO: clean this up... -->
-<% for (var i = 0; i < 3; i ++) { %>
+<% for (var i = 0; i < limit; i ++) { %>
 	<div class="_img imgLarge" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[i]['appId'] %>/header.jpg")'>
 		<div class="gamesDetail _gamesDetail hide">
 			<div class="bottom">
@@ -16,42 +16,42 @@
 			</div>
 		</div>
 	</div>
-	<div class="_img imgNormal right" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[(i*2)+3]['appId'] %>/header.jpg")'>
+	<div class="_img imgNormal right" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[(i*2)+limit]['appId'] %>/header.jpg")'>
 		<div class="discount hide">
-			<% if (games[(i*2)+3]['priceOverview']['discount_percent'] > 0) { %>
-				<span>-<%= games[(i*2)+3]['priceOverview']['discount_percent'] %>%</span>
+			<% if (games[(i*2)+limit]['priceOverview']['discount_percent'] > 0) { %>
+				<span>-<%= games[(i*2)+limit]['priceOverview']['discount_percent'] %>%</span>
 			<% } %>
 		</div>
 		<div class="gamesDetail _gamesDetail hide">
 			<div class="bottom">
-				<span class="name"><%= games[(i*2)+3]['name'] %></span>
-				<span class="hours"><%= games[(i*2)+3]['playTimeForever'] %>h</span>
-				<% if (games[(i*2)+3]['totalAchievements'] > 0) { %>
-					<span class="achievements"><%= games[(i*2)+3]['totalAchievementsCompleted'] %>/<%= games[(i*2)+3]['totalAchievements'] %></span>
+				<span class="name"><%= games[(i*2)+limit]['name'] %></span>
+				<span class="hours"><%= games[(i*2)+limit]['playTimeForever'] %>h</span>
+				<% if (games[(i*2)+limit]['totalAchievements'] > 0) { %>
+					<span class="achievements"><%= games[(i*2)+limit]['totalAchievementsCompleted'] %>/<%= games[(i*2)+limit]['totalAchievements'] %></span>
 				<% } %>
-				<% if (games[(i*2)+3]['priceOverview']['final'] > 0) { %>
-					<span class="cost">$<%= games[(i*2)+3]['priceOverview']['final'] %></span>
+				<% if (games[(i*2)+limit]['priceOverview']['final'] > 0) { %>
+					<span class="cost">$<%= games[(i*2)+limit]['priceOverview']['final'] %></span>
 				<% } else { %>
 					<span class="cost">FREE</span>
 				<% } %>
 			</div>
 		</div>
 	</div>
-	<div class="_img imgNormal right" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[(i*2)+4]['appId'] %>/header.jpg")'>
+	<div class="_img imgNormal right" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[(i*2)+limit+1]['appId'] %>/header.jpg")'>
 		<div class="discount hide">
-			<% if (games[(i*2)+4]['priceOverview']['discount_percent'] > 0) { %>
-				<span>-<%= games[(i*2)+4]['priceOverview']['discount_percent'] %>%</span>
+			<% if (games[(i*2)+limit+1]['priceOverview']['discount_percent'] > 0) { %>
+				<span>-<%= games[(i*2)+limit+1]['priceOverview']['discount_percent'] %>%</span>
 			<% } %>
 		</div>
 		<div class="gamesDetail _gamesDetail hide">
 			<div class="bottom">
-				<span class="name"><%= games[(i*2)+4]['name'] %></span>
-				<span class="hours"><%= games[(i*2)+4]['playTimeForever'] %>h</span>
-				<% if (games[(i*2)+4]['totalAchievements'] > 0) { %>
-					<span class="achievements"><%= games[(i*2)+4]['totalAchievementsCompleted'] %>/<%= games[(i*2)+4]['totalAchievements'] %></span>
+				<span class="name"><%= games[(i*2)+limit+1]['name'] %></span>
+				<span class="hours"><%= games[(i*2)+limit+1]['playTimeForever'] %>h</span>
+				<% if (games[(i*2)+limit+1]['totalAchievements'] > 0) { %>
+					<span class="achievements"><%= games[(i*2)+limit+1]['totalAchievementsCompleted'] %>/<%= games[(i*2)+limit+1]['totalAchievements'] %></span>
 				<% } %>
-				<% if (games[(i*2)+4]['priceOverview']['final'] > 0) { %>
-					<span class="cost">$<%= games[(i*2)+4]['priceOverview']['final'] %></span>
+				<% if (games[(i*2)+limit+1]['priceOverview']['final'] > 0) { %>
+					<span class="cost">$<%= games[(i*2)+limit+1]['priceOverview']['final'] %></span>
 				<% } else { %>
 					<span class="cost">FREE</span>
 				<% } %>
@@ -59,7 +59,7 @@
 		</div>
 	</div>
 <% } %>
-<% for (var i = 9; i < 15; i ++) { %>
+<% for (var i = limit * 3; i < maxGamesLength; i ++) { %>
 	<div class="_img imgNormal left" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[i]['appId'] %>/header.jpg")'>
 		<div class="discount hide">
 			<% if (games[i]['priceOverview']['discount_percent'] > 0) { %>

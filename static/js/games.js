@@ -5,7 +5,7 @@ define([
 	], function (base, View, pagination) {
 	'use strict';
 
-	var games = {};;
+	var games = {};
 
 	games.init = function () {
 		$.extend(games, base);
@@ -14,13 +14,22 @@ define([
 
 	games.render = function (data) {
 		var view = games.view;
+		var newData = games.deepCopy(data['view']['data']);
+		
+		newData['limit'] = Math.min(Math.floor(newData['games'].length/3), 3);
+		newData['maxGamesLength'] = Math.min(newData['games'].length, 15);
 
-		pagination.init(games, data);
+		view.setData(newData);
+		view.setTemplate(data['view']['template']);
 
-		view.update(data)
+		var response = view.getResponse();
+
+		view.update(response)
 			.then(function() {
 				games.addListenersToImages(0);
 			});
+
+		pagination.init(games, data);
 	}
 
 	games.loadMore = function (startIndex, data) {

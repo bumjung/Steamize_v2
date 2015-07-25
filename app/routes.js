@@ -10,13 +10,20 @@ var routes = function (app, router, Account, AccountController, ProfileControlle
 	});
 
     app.get('/:steam_id', function(req, res) {
-        var data = {
-            steamId: req.params.steam_id
-        }
+        var steamId = req.params.steam_id;
+        AccountController.getSteamIdNumberFromString(steamId)
+            .then(function (steamNumId) {
+                var data = {};
+                if (steamNumId) {
+                    data['steamId'] = steamNumId
+                } else {
+                    data['steamId'] = steamId
+                }
 
-        Account._init(req.params.steam_id, AccountController)
-            .then(function () {
-                res.render('steamize', {view: data});
+                Account._init(data['steamId'], AccountController)
+                    .then(function () {
+                        res.render('steamize', {view: data});
+                    });
             });
     });
 
@@ -31,6 +38,7 @@ var routes = function (app, router, Account, AccountController, ProfileControlle
 
     router.route('/id/:steam_id')
         .get(function (req, res) {
+            Account.setSteamId(req.params.steam_id);
             ProfileController.getPlayerSummaries(req.params.steam_id)
                 .then(function (response) {
                     res.json(response);
@@ -39,6 +47,7 @@ var routes = function (app, router, Account, AccountController, ProfileControlle
 
     router.route('/id/:steam_id/friends')
         .get(function (req, res) {
+            Account.setSteamId(req.params.steam_id);
             FriendsController.getFriendsList(req.params.steam_id)
                 .then(function (response) {
                     res.json(response);
@@ -47,6 +56,7 @@ var routes = function (app, router, Account, AccountController, ProfileControlle
 
     router.route('/id/:steam_id/games')
         .get(function (req,res) {
+            Account.setSteamId(req.params.steam_id);
             Q.allSettled([GamesController.getFullGameSchema(Account), GamesDetailController.getFullGamesDetail(Account)])
                 .spread(function (gameSchema, gamesDetail) {
                     if (gameSchema['state'] === 'fulfilled' && gamesDetail['state'] === 'fulfilled' &&

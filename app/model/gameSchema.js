@@ -13,6 +13,6 @@ var achievementSchema = new Schema({
     }]
 });
 
-var GameSchema = mongoose.model('Schema', achievementSchema);
+var GameSchema = mongoose.model('GameSchema', achievementSchema);
 
 module.exports = GameSchema;
