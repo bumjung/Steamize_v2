@@ -25,6 +25,7 @@
     "url": ""
   },
   "scripts": {
+    "postinstall": "bower install && grunt",
     "start": "node app.js"
   }
 }
