@@ -8,7 +8,6 @@ var bodyParser  = require('body-parser');
 var session     = require('express-session');
 var methodOverride = require('method-override');
 var redis = require('redis');
-var client = redis.createClient();
 
 var dbConfig = require('./config/database');
 
@@ -22,13 +21,24 @@ var GamesController = require('./app/controller/GamesController');
 var GamesDetailController = require('./app/controller/GamesDetailController');
 
 // configuration ===============================================================
-mongoose.connect(dbConfig.url);
+if (process.env.NODE_ENV === 'dev') {
+	mongoose.connect(dbConfig.dev);
+
+	var client 	= redis.createClient();
+	var redis 	= new Redis(client);
+} else {
+	mongoose.connect(dbConfig.prod);
+
+	var rtg 	= require("url").parse(process.env.REDISTOGO_URL);
+	var client 	= redis.createClient(rtg.port, rtg.hostname);
+	client.auth(rtg.auth.split(":")[1]);
+	var redis 	= new Redis(client);
+}
 
 client.on('error', function(e){
   console.log(e);
 });
 
-var redis = new Redis(client);
 
 app.use("/dist", express.static(__dirname + "/dist"));
 app.use("/static", express.static(__dirname + "/static"));

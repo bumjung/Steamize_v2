@@ -28,6 +28,13 @@ AccountController.prototype = _.extend(BaseController.prototype, {
 
             			if (body['response'] && body['response']['success'] === 1) {
             				return database.saveSteamIdNumberFromString(steamId, body['response']['steamid']);
+            			} else {
+            				var regex = /^([0-9]){17}$/;
+            				if (regex.test(steamId)) {
+            					return steamId;
+            				} else {
+            					return -1;
+            				}
             			}
 					});
 				}

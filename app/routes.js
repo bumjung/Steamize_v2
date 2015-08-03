@@ -14,10 +14,11 @@ var routes = function (app, router, Account, AccountController, ProfileControlle
         AccountController.getSteamIdNumberFromString(steamId)
             .then(function (steamNumId) {
                 var data = {};
-                if (steamNumId) {
-                    data['steamId'] = steamNumId
+                if (steamNumId === -1) {
+                    res.status(404)
+                        .send('Not found');
                 } else {
-                    data['steamId'] = steamId
+                    data['steamId'] = steamNumId;
                 }
 
                 Account._init(data['steamId'], AccountController)
