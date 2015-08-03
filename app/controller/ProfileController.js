@@ -4,7 +4,7 @@ var Q = require('q');
 var _ = require('underscore');
 
 var BaseController = require('./BaseController');
-var URL = require('../../config/steamUrl');
+var URL = require('../steamUrl');
 
 var ProfileController = function (Redis) {
     this.Redis = Redis;

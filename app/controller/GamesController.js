@@ -5,7 +5,7 @@ var _ = require('underscore');
 
 var BaseController = require('./BaseController');
 var database = require('../database');
-var URL = require('../../config/steamUrl');
+var URL = require('../steamUrl');
 var Helper = require('../helper.js');
 
 var GamesController = function (Redis) {
