@@ -28,7 +28,7 @@ if (process.env.NODE_ENV === 'dev') {
 } else {
 	mongoose.connect(process.env.MONGOLAB_URI);
 
-	var rtg 	= require("url").parse(process.env.REDISTOGO_URL);
+	var rtg 	= require("url").parse(process.env.REDIS_URL);
 	var client 	= redis.createClient(rtg.port, rtg.hostname);
 	client.auth(rtg.auth.split(":")[1]);
 	var redis 	= new Redis(client);
