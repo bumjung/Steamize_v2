@@ -4,6 +4,7 @@
   "version": "0.0.1",
   "dependencies": {
     "body-parser": "^1.9.0",
+    "bower": "^1.4.1",
     "ejs": "^2.3.1",
     "express": "~4.*",
     "express-session": "^1.8.2",
@@ -25,7 +26,7 @@
     "url": ""
   },
   "scripts": {
-    "postinstall": "bower install && grunt",
+    "postinstall": "./node_modules/bower/bin/bower install && grunt",
     "start": "node app.js"
   }
 }
