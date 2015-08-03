@@ -2,7 +2,7 @@
 
 var Q = require('q');
 var _ = require('underscore');
-var URL = require('../config/steamUrl');
+var URL = require('./steamUrl');
 
 var Account = function() {
 	this.steamId = null;

@@ -9,8 +9,6 @@ var session     = require('express-session');
 var methodOverride = require('method-override');
 var redis = require('redis');
 
-var dbConfig = require('./config/database');
-
 var Redis = require('./app/redis');
 
 var Account = require('./app/account');
@@ -22,6 +20,7 @@ var GamesDetailController = require('./app/controller/GamesDetailController');
 
 // configuration ===============================================================
 if (process.env.NODE_ENV === 'dev') {
+	var dbConfig = require('./config/database');
 	mongoose.connect(dbConfig.dev);
 
 	var client 	= redis.createClient();
