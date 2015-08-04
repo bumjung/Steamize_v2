@@ -9,6 +9,7 @@
     "express": "~4.*",
     "express-session": "^1.8.2",
     "grunt": "latest",
+    "grunt-cli": "^0.1.13",
     "grunt-contrib-cssmin": "latest",
     "grunt-contrib-less": "latest",
     "grunt-contrib-requirejs": "latest",
