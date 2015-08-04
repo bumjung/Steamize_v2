@@ -60,7 +60,7 @@ module.exports = function(grunt) {
     });
 
 
-    grunt.registerTask('default', ['uglify', 'cssmin', 'less']);
+    grunt.registerTask('default', ['less', 'cssmin']);
 
     grunt.loadNpmTasks('grunt-contrib-uglify');
     grunt.loadNpmTasks('grunt-contrib-less');
