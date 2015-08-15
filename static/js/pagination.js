@@ -56,7 +56,7 @@ define([
 		var view = pagination.view;
 
 		view.setTemplate('/src/core/mvc/view/gamesMore.ejs');
-		view.setData({ games: subGames });
+		view.setData({ games: subGames, index: startPagination });
 		var response = view.getResponse();
 
 		pagination.games.loadMore(startPagination, response);

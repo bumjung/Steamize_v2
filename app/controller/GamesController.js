@@ -10,6 +10,7 @@ var Helper = require('../helper.js');
 
 var GamesController = function (Redis) {
 	this.Redis = Redis;
+	// cache for 1 hour
 	this.Redis.setExpireTime(60 * 60 * 1);
 	this.MAX_DEMO_ACHIEVEMENTS = 5;
 };

@@ -1,17 +1,11 @@
 @import "colors";
 @import "variables";
 @import "helper";
+@import "image_slider";
 
 body {
+	font-family: 'Roboto';
 	background-color: @darkGrey;
-}
-
-.right {
-	float: right!important;
-}
-
-.left {
-	float: left!important;
 }
 
 a {
@@ -54,14 +48,10 @@ a {
 				font-size: 13px;
 				width: (@gamesContainerWidth - 39px);
 				height: 41px;
-				margin: 0 0 16px 0;
-				padding: 0 0 0 39px;
+				margin: 0 0 16px 35px;
 				border: 0;
-				border-radius: 3px;
-				background-color: @lightGrey;
-				background-image:url('http://png-4.findicons.com/files/icons/1389/g5_system/32/toolbar_find.png');
-				background-repeat:no-repeat;
-				background-position:left center;outline:0;
+				background-color: transparent;
+				border-bottom: 1px solid #5f5f5f;
 			}
 		}
 	}
@@ -88,8 +78,16 @@ a {
 			.name {
 				display: block;
 				font-size: 18px;
+
+				.status-circle {
+					display: inline-block;
+					margin: 0 3px 2px 0;
+					width: 8px;
+					height: 8px;
+					border-radius:8px;
+				}
 			}
-			.location {
+			.status {
 				font-size: 14px;
 				color: @fontGrey;
 			}
@@ -97,6 +95,9 @@ a {
 		.userSummary {
 			font-size: 32px;
 
+			.hours, .money, .achievements {
+				font-weight: 300;
+			}
 			.placeholder {
 				display: block;
 				font-size: 14px;
@@ -108,6 +109,20 @@ a {
 	}
 
 	#gamesContainer {
+		.cost {
+			display: inline-block;
+			padding: 5px 9px 6px 7px;
+			margin: 0 3px 0 0;
+			background-color: @costBackground;
+			font-size: 16px;
+
+			&.discount {
+				margin: 0;
+				color: rgba(255, 255, 255, 0.75);
+				background-color: transparent;
+				text-decoration: line-through;
+			}
+		}
 		#imageContainer {
 		  width: @gamesContainerWidth;
 		  display: inline-block;
@@ -150,13 +165,6 @@ a {
 					.achievements {
 						font-size: 14px;
 					}
-					.cost {
-						float: right;
-						padding: 5px 9px 6px 7px;
-						margin: 0 7px 0 0;
-						background-color: @costBackground;
-						font-size: 16px;
-					}
 				}
 			}
 			.imgLarge, .imgNormal {
@@ -168,6 +176,20 @@ a {
 				-moz-background-size: cover;
 				-o-background-size: cover;
 				background-size: cover;
+			}
+			.discountPercent {
+				position: relative;
+				width: 100%;
+				height: 100%;
+
+				> span {
+					background-color: @discountBackground;
+					position: absolute;
+					bottom: 6.3px;
+					right: 7px;
+					font-size: 16px;
+					padding: 2px 6px 4px 11px;
+				}
 			}
 			.imgLarge {
 				width: @imgWidthLarge;
@@ -185,20 +207,6 @@ a {
 				height: @imgHeightNormal;
 				float: left;
 
-				.discount {
-					position: relative;
-					width: 100%;
-					height: 100%;
-
-					> span {
-						background-color: @discountBackground;
-						position: absolute;
-						bottom: 6.3px;
-						right: 7px;
-						font-size: 16px;
-						padding: 2px 6px 4px 11px;
-					}
-				}
 				.gamesDetail {
 					.bottom {
 						bottom: 0px;
@@ -211,7 +219,7 @@ a {
 					.hours {
 						margin: 0 0 0 11px;
 					}
-					.cost {
+					.pricing {
 						margin: 0 5px 6px 0;
 					}
 				}
@@ -242,7 +250,6 @@ a {
 				display:block;
 				border: 1px solid @line;
 			}
-
 			.extra {
 				margin: 3.5px 0 0 0;
 				font-size: 12px;
@@ -252,6 +259,136 @@ a {
 				.about {
 					display: inline-block;
 					margin: 0 9px 0 0;
+				}
+			}
+		}
+
+		.oneGame {
+			margin: 5.5px 0 226.6px 0;
+
+			.sub-heading {
+				font-weight: 400;
+				font-size: 18px;
+				margin: 0 0 9px 0;
+			}
+			.title {
+				font-weight: 400;
+				font-size: 26px;
+				margin: 0;
+				padding: 0;
+			}
+			.screenshots {
+				position: relative;
+				width: (@gamesContainerWidth - 2)!important;
+				border: 1px solid rgba(255, 255, 255, 0.2);
+				margin: 11px 0 12px 0;
+				ul {
+					width: @gamesContainerWidth;
+					padding: 0;
+					margin: 0;
+					li {
+						width: 100%;
+						height: @scrnshotHeight;
+
+						background-repeat: no-repeat;
+						background-attachment: center center;
+						background-position: fixed;
+						-webkit-background-size: cover;
+						-moz-background-size: cover;
+						-o-background-size: cover;
+						background-size: cover;
+					}
+				}
+			}
+			.recommendations {
+				position: relative;
+				padding: 14px 0 13px 11.5px;
+				border-radius: 3px;
+				font-size: 16px;
+				.rating {
+
+				}
+				.value {
+					color: rgba(255, 255, 255, 0.49);
+				}
+				.pricing {
+					position: absolute;
+					right: 0;
+					top: 8px;
+
+					.cost {
+						margin: 0 7px 0 0;
+
+						&.discount {
+							margin: 0;
+						}
+					}
+				}
+			}
+
+			.description {
+				position: relative;
+				max-height: 300px;
+				overflow: hidden;
+				margin: 10px 0 13.5px 0;
+
+				p {
+					width: calc(@gamesContainerWidth + ~"- 37px");
+					margin: 0;
+					padding: 19px 17px 22px 20px;
+					background-color: @textBox;
+					border-radius: 3px;
+					font-size: 14px;
+					color: @fontGrey;
+
+					a {
+						color: #fff;
+						text-decoration: none;
+					}
+				}
+				.read-more { 
+					position: absolute; 
+					cursor: pointer;
+					color: #fff;
+					bottom: 0; 
+					left: 0;
+					width: 100%; 
+					text-align: center; 
+					margin: 0; padding: 30px 0; 
+
+					background: -webkit-linear-gradient(
+					  rgba(255, 0, 0, 0),
+					  @textBox);
+					background: -webkit-linear-gradient(
+					  rgba(255, 0, 0, 0),
+					  @textBox);
+					background: -o-linear-gradient(
+					  rgba(255, 0, 0, 0),
+					  @textBox);
+					background: -moz-linear-gradient(
+					  rgba(255, 0, 0, 0),
+					  @textBox);
+					background: linear-gradient(
+					  rgba(255, 0, 0, 0),
+					  @textBox);
+				}
+			}
+			.stats {
+				margin: 0 0 13px 0;
+
+				.summary {
+					font-weight: 500;
+					padding: 37.8px 0 44.3px 18.5px;
+					background-color: @textBox;
+					border-radius: 3px;
+					font-size: 16px;
+
+					.text {
+						color: rgba(255, 255, 255, 0.23);
+					}
+					.achievements {
+						margin: 0 0 0 124px;
+					}
 				}
 			}
 		}

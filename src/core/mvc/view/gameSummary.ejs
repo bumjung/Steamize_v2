@@ -1,0 +1,31 @@
+<h2 class="title"><%= name %></h2>
+	<div class="screenshots banner">
+		<ul>
+			<% for (var i=0; i < screenshots.length; i++) { %>
+			<li style='background-image: url("<%= screenshots[i]['path_full'] %>")'></li>
+			<% } %>
+		</ul>
+	</div>
+	<div class="recommendations <%= metacritic['cssClass'] %>">
+		<span class="rating"><%= metacritic['rating'] %></span>
+		<span class="value"><%= recommendations['total'] %> recommendations</span>
+		<span class="pricing right">
+			<% if (priceOverview['discount_percent'] > 0) { %>
+			<span class="cost discount">$<%= priceOverview['initial'] %></span>
+			<% } %>
+			<span class="cost">$<%= priceOverview['final'] %></span>
+		</span>
+	</div>
+	<div class="description">
+		<h3 class="sub-heading">Description</h3>
+		<p class="_description"></p>
+		<% if (description != "No description available.") { %>
+		<p class="_read-more read-more">Read More</p></div>
+		<% } %>
+	<div class="stats">
+		<h3 class="sub-heading">Stats</h3>
+		<div class="summary">
+			<span class="hours"><%= playTimeTwoWeeks %> hours played <span class="text">in last 2 weeks</span></span>
+			<span class="achievements"><%= totalAchievementsCompleted %>/<%= totalAchievements %> Achievements</span>
+		</div>
+	</div>

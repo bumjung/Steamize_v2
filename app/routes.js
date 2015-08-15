@@ -83,12 +83,14 @@ var routes = function (app, router, Account, AccountController, ProfileControlle
                             var tempResponse = gameSchema['games'][i];
                             var appId = gameSchema['games'][i]['appId'];
                             if (gamesDetail['gamesDetail'][appId]) {
-                                tempResponse['priceOverview'] = gamesDetail['gamesDetail'][appId]['priceOverview'];
-                                tempResponse['platforms'] = gamesDetail['gamesDetail'][appId]['platforms'];
-                                tempResponse['metacritic'] = gamesDetail['gamesDetail'][appId]['metacritic'];
-                                tempResponse['categories'] = gamesDetail['gamesDetail'][appId]['categories'];
-                                tempResponse['genres'] = gamesDetail['gamesDetail'][appId]['genres'];
-                                tempResponse['background'] = gamesDetail['gamesDetail'][appId]['background'];
+                                tempResponse['description']     = gamesDetail['gamesDetail'][appId]['description'];
+                                tempResponse['priceOverview']   = gamesDetail['gamesDetail'][appId]['priceOverview'];
+                                tempResponse['platforms']       = gamesDetail['gamesDetail'][appId]['platforms'];
+                                tempResponse['metacritic']      = gamesDetail['gamesDetail'][appId]['metacritic'];
+                                tempResponse['categories']      = gamesDetail['gamesDetail'][appId]['categories'];
+                                tempResponse['genres']          = gamesDetail['gamesDetail'][appId]['genres'];
+                                tempResponse['screenshots']     = gamesDetail['gamesDetail'][appId]['screenshots'];
+                                tempResponse['recommendations'] = gamesDetail['gamesDetail'][appId]['recommendations'];
                                 
                                 response['view']['data']['games'].push(tempResponse);
                             }

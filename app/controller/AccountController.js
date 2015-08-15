@@ -9,6 +9,7 @@ var database = require('../database');
 
 var AccountController = function (Redis) {
 	this.Redis = Redis;
+	// cache for 12 hours
 	this.Redis.setExpireTime(60 * 60 * 12);
 };
 

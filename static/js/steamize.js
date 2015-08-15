@@ -2,8 +2,9 @@ define([
 	'./base.js',
 	'./smz.js',
 	'./view.js',
-	'./games.js'
-	], function (base, smz, View, games, pagination) {
+	'./games.js',
+	'./profile.js'
+	], function (base, smz, View, games, profile) {
 	'use strict';
 
 	var steamize = {};
@@ -12,6 +13,7 @@ define([
 		$.extend(steamize, base);
 
 		smz.initSubmit();
+		profile.init();
 		games.init();
 
 		this.render(data);
@@ -23,12 +25,11 @@ define([
 
 	steamize.render = function (data) {
 		$.extend(steamize, data);
-		var profileView = new View('.userInfo');
 		var summaryView = new View('.userSummary');
 
 		steamize.getProfileData(steamize.steamId)
 			.then(function(data) {
-				profileView.update(data);
+				profile.render(data);
 			});
 
 		steamize.getGamesData(steamize.steamId)

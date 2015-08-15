@@ -1,0 +1,56 @@
+///////////////////////////////////////////////////////////
+// IMAGE SILDER
+///////////////////////////////////////////////////////////
+
+.banner {
+	position: relative;
+	overflow: auto;
+
+	ul li {
+		list-style: none;
+		float: left;
+	}
+	.dot {
+		-webkit-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+		-moz-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+		-ms-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+		-o-filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+		filter: drop-shadow(0 1px 2px rgba(0,0,0,.3));
+	}
+	
+	.dots {
+		position: absolute;
+	    text-align: center;
+	    bottom: 0;
+	    right: 0;
+	    left: 0;
+	    padding: 12px 0 0 0;
+	    margin: 0;
+	    background-color: rgba(0, 0, 0, 0.75);
+
+		li {
+			display: inline-block;
+			width: 8px;
+			height: 8px;
+			margin: 0 4px;
+			
+			text-indent: -999em;
+			
+			border-radius: 8px;
+			background-color: #8b8b8b;
+			cursor: pointer;
+			
+			-webkit-transition: background .5s, opacity .5s;
+			-moz-transition: background .5s, opacity .5s;
+			transition: background .5s, opacity .5s;
+
+			&.active {
+				background: #fff;
+				opacity: 1;
+			}
+		}
+	}
+}
+
+///////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////

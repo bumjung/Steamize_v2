@@ -20,6 +20,6 @@ define([
 	base.getGamesData = function (steamId) {
 		return smz.request('/api/id/'+steamId+'/games');
 	}
-
+	
 	return base;
 });
