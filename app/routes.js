@@ -3,7 +3,7 @@
 var Q = require('q');
 var _ = require('underscore');
 
-var routes = function (app, router, Account, AccountController, ProfileController, FriendsController, GamesController, GamesDetailController) {
+var routes = function (app, router, Account, AccountController, ProfileController, FriendsController, GamesController, GamesDetailController, GameReviewController) {
 	// application -------------------------------------------------------------
 	app.get('/', function (req, res) {
 	    res.render('index', {view:{}});
@@ -100,6 +100,17 @@ var routes = function (app, router, Account, AccountController, ProfileControlle
                     }
                 });
         });
+
+        router.route('/id/:steam_id/reviews/:appId')
+            .get(function (req,res) {
+                Account.setSteamId(req.params.steam_id);
+                var gamesList = Account.getGamesList();
+
+                GameReviewController.getGameReview(gamesList, req.params.appId)
+                    .then(function (response) {
+                        res.json(response);
+                    });
+            });
 
     app.use('/api', router);
 

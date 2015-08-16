@@ -17,6 +17,7 @@ var ProfileController = require('./app/controller/ProfileController');
 var FriendsController = require('./app/controller/FriendsController');
 var GamesController = require('./app/controller/GamesController');
 var GamesDetailController = require('./app/controller/GamesDetailController');
+var GameReviewController = require('./app/controller/GameReviewController');
 
 // configuration ===============================================================
 if (process.env.NODE_ENV === 'dev') {
@@ -59,9 +60,10 @@ var profileController = new ProfileController(redis);
 var gamesController = new GamesController(redis);
 var friendsController = new FriendsController(redis);
 var gamesDetailController = new GamesDetailController(redis);
+var gameReviewController = new GameReviewController(redis);
 
 // routes ======================================================================
-require('./app/routes')(app, router, account, accountController, profileController, friendsController, gamesController, gamesDetailController);
+require('./app/routes')(app, router, account, accountController, profileController, friendsController, gamesController, gamesDetailController, gameReviewController);
 
 // listen ======================================================================
 app.listen(app.get('port'));

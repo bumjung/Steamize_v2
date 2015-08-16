@@ -21,5 +21,8 @@ define([
 		return smz.request('/api/id/'+steamId+'/games');
 	}
 	
+	base.getGameReviewData = function (steamId, appId) {
+		return smz.request('/api/id/'+steamId+'/reviews/'+appId);
+	}
 	return base;
 });

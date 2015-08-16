@@ -11,6 +11,7 @@ var URL = {
 	API_URL_STATS: 'http://api.steampowered.com/ISteamUserStats',
 	API_URL_PLAYER: 'http://api.steampowered.com/IPlayerService',
 	API_URL_API: 'http://store.steampowered.com/api',
+	API_URL_REVIEW: 'http://store.steampowered.com/appreviews',	
 
 	getSteamIdNumberFromString: function (steamId) {
 		return this.API_URL_USER + '/ResolveVanityURL/v0001/?key='+key+'&vanityurl='+steamId;
@@ -32,6 +33,9 @@ var URL = {
 	},
 	getAppDetails: function(appId) {
 		return this.API_URL_API + '/appdetails/?appids='+appId+'&key='+key+'&cc=US&l=english&v=1%20HTTP/1.1';
+	},
+	getGameReview: function(appId) {
+		return this.API_URL_REVIEW + '/' + appId;
 	}
 }
 

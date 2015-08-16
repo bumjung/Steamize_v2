@@ -1,14 +1,18 @@
 define([
 	'./base.js',
-	'./view.js'
-	], function (base, View) {
+	'./view.js',
+	'./gameReview.js'
+	], function (base, View, gameReview) {
 	'use strict';
 
 	var gameSummary = {};
 
 	gameSummary.init = function () {
 		$.extend(gameSummary, base);
-		gameSummary.view = new View('.oneGame');
+		gameSummary.viewClass = '.oneGame';
+		gameSummary.view = new View(gameSummary.viewClass);
+
+		gameReview.init();
 	}
 
 	gameSummary.render = function (data) {
@@ -32,6 +36,11 @@ define([
 				});
 
 				gameSummary.addListenerToReadMe();
+			});
+
+		gameReview.getGameReviewData(window.sz.steamize.steamId, data.appId)
+			.then(function (data) {
+				gameReview.render(data);
 			});
 	}
 

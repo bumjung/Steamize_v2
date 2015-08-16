@@ -1,0 +1,14 @@
+<h3 class="sub-heading">Reviews</h3>
+<div class="reviews">
+	<% for (var i=0; i< Math.min(4, reviews.length); i++) { %>
+		<% if (reviews[i]['review'] === 'positive') { %> 
+	<div class="review positive<% if ((i+1) % 2 === 0) { %> even <% } %>">
+		<h4><i class="fa fa-thumbs-o-up"></i>Recommended</h4>
+		<% } else {%>
+	<div class="review negative<% if ((i+1) % 2 === 0) { %> even <% } %>">
+		<h4><i class="fa fa-thumbs-o-down"></i>Not Recommended</h4>
+		<% } %>
+		<p class="content"></p>
+	</div>
+	<% } %>
+</div>

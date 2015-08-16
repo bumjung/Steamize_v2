@@ -14,7 +14,7 @@ define([
 
 		smz.initSubmit();
 		profile.init();
-		games.init();
+		games.init(steamize.steamId);
 
 		this.render(data);
 	}

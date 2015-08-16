@@ -10,7 +10,8 @@ define([
 
 	games.init = function () {
 		$.extend(games, base);
-		games.view = new View('#imageContainer');
+		games.viewClass = '#imageContainer';
+		games.view = new View(games.viewClass);
 
 		gameSummary.init();
 	}
@@ -65,6 +66,9 @@ define([
 				}
 			});
 			$(imageSelector[i]).on('click', function () {
+				$(games.viewClass).hide();
+				$('.moreGames').hide();
+				$(gameSummary.viewClass).show();
 				var index = $(this).data('index');
 				gameSummary.render(data['games'][index - startIndex]);
 			});

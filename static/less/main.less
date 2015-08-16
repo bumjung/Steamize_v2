@@ -391,6 +391,43 @@ a {
 					}
 				}
 			}
+			.gameReview {
+				position: relative;
+				width: @gamesContainerWidth;
+				.reviews {
+					font-size: 0;
+					.review {
+						display: inline-block;
+						width: calc((@gamesContainerWidth/2) + ~"- 32px");
+						height: 110px;
+						margin: 0 5px 5px 0;
+						padding: 16px 9px 18px 20px;
+						border-radius: 3px;
+						overflow: hidden;
+
+						h4 {
+							font-size: 18px;
+							margin: 0;
+							padding: 0;
+
+							i {
+								font-size: 20px;
+								margin: 0 8px 0 0;
+							}
+						}
+						p {
+							width: 100%;
+							height: calc(~"100% - 28px");
+							margin: 11px 0 0 0;
+							font-size: 14px;
+							overflow: hidden;
+						}
+						&.even {
+							margin-right: 0;
+						}
+					}
+				}
+			}
 		}
 	}
 }
