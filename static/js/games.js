@@ -66,11 +66,13 @@ define([
 				}
 			});
 			$(imageSelector[i]).on('click', function () {
-				$(games.viewClass).hide();
-				$('.moreGames').hide();
-				$(gameSummary.viewClass).show();
 				var index = $(this).data('index');
-				gameSummary.render(data['games'][index - startIndex]);
+				var gameData = data['games'][index - startIndex];
+
+				gameSummary.render(gameData)
+					.then(function () {
+						games.hideLibrary();
+					});
 			});
 		}
 	}
@@ -90,6 +92,19 @@ define([
 			}
 		}
 	}
+
+	games.hideLibrary = function () {
+		$(games.viewClass).hide();
+		$('.moreGames').hide();
+		$(gameSummary.viewClass).show();
+		window.scrollTo(0,0);
+	}
+
+	games.showLibrary = function () {
+		$(games.viewClass).show();
+		$('.moreGames').show();
+		$(gameSummary.viewClass).hide();
+	}	
 
 	return games;
 });

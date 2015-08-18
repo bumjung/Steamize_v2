@@ -16,6 +16,8 @@ define([
 	}
 
 	gameSummary.render = function (data) {
+		window.history.pushState({"showLibrary" : false},"", window.location.pathname+'/'+data['appId']);
+
 		var view = gameSummary.view;
 
 		var newData = gameSummary.deepCopy(data);
@@ -26,7 +28,12 @@ define([
 
 		var response = view.getResponse();
 
-		view.update(response)
+		gameReview.getGameReviewData(window.sz.steamize.steamId, data.appId)
+			.then(function (data) {
+				gameReview.render(data);
+			});
+
+		return view.update(response)
 			.then(function () {			
 				$('._description').html($.parseHTML(newData['description']));	
 				$('.banner').unslider({
@@ -36,11 +43,6 @@ define([
 				});
 
 				gameSummary.addListenerToReadMe();
-			});
-
-		gameReview.getGameReviewData(window.sz.steamize.steamId, data.appId)
-			.then(function (data) {
-				gameReview.render(data);
 			});
 	}
 

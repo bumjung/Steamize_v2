@@ -3,8 +3,9 @@ define([
 	'./smz.js',
 	'./view.js',
 	'./games.js',
-	'./profile.js'
-	], function (base, smz, View, games, profile) {
+	'./profile.js',
+	'./userSummary.js'
+	], function (base, smz, View, games, profile, userSummary) {
 	'use strict';
 
 	var steamize = {};
@@ -15,6 +16,17 @@ define([
 		smz.initSubmit();
 		profile.init();
 		games.init(steamize.steamId);
+		userSummary.init();
+
+		window.onpopstate = function(e){
+		    if (e.state) {
+		    	if (e.state.showLibrary) {
+		    		games.showLibrary();
+		    	} else {
+		    		games.hideLibrary();
+		    	}
+		    }
+		};
 
 		this.render(data);
 	}
@@ -25,7 +37,8 @@ define([
 
 	steamize.render = function (data) {
 		$.extend(steamize, data);
-		var summaryView = new View('.userSummary');
+
+		window.history.pushState({"showLibrary" : true},"", window.location.pathname);
 
 		steamize.getProfileData(steamize.steamId)
 			.then(function(data) {
@@ -35,17 +48,7 @@ define([
 		steamize.getGamesData(steamize.steamId)
 			.then(function(data) {
 				games.render(data);
-
-				var summary = {};
-				summary['totalAchievementsCompleted'] = data['view']['data']['totalAchievementsCompleted'];
-				summary['totalPlayedTime'] = data['view']['data']['totalPlayedTime'];
-				summary['totalCost'] = data['view']['data']['totalCost'].toFixed(2);
-				
-				summaryView.setTemplate('/src/core/mvc/view/summary.ejs');
-				summaryView.setData(summary);
-				var response = summaryView.getResponse();
-				
-				summaryView.update(response);
+				userSummary.render(data);
 			});
 	}
 
