@@ -1,6 +1,6 @@
 <!-- TODO: clean this up... -->
 <% for (var i = 0; i < limit; i ++) { %>
-	<div class="_img imgLarge" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[i]['appId'] %>/header.jpg")' data-index=<%= i %>>
+	<div class="_img imgLarge" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[i]['appId'] %>/header.jpg")' data-appId=<%= games[i]['appId'] %>>
 		<div class="gamesDetail _gamesDetail hide">
 			<div class="bottom">
 				<span class="name"><%= games[i]['name'] %></span>
@@ -23,7 +23,7 @@
 		</div>
 	</div>
 	<% var index = (i*2)+limit; %>
-	<div class="_img imgNormal right" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[index]['appId'] %>/header.jpg")' data-index=<%= index %>>
+	<div class="_img imgNormal right" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[index]['appId'] %>/header.jpg")' data-appId=<%= games[index]['appId'] %>>
 		<% if (games[index]['priceOverview']['discount_percent'] > 0) { %>
 		<div class="discountPercent _discountPercent">
 			<span>-<%= games[index]['priceOverview']['discount_percent'] %>%</span>
@@ -51,7 +51,7 @@
 		</div>
 	</div>
 	<% var index = (i*2)+limit+1; %>
-	<div class="_img imgNormal right" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[index]['appId'] %>/header.jpg")' data-index=<%= index %>>
+	<div class="_img imgNormal right" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[index]['appId'] %>/header.jpg")' data-appId=<%= games[index]['appId'] %>>
 		<% if (games[index]['priceOverview']['discount_percent'] > 0) { %>
 		<div class="discountPercent _discountPercent">
 			<span>-<%= games[index]['priceOverview']['discount_percent'] %>%</span>
@@ -80,7 +80,7 @@
 	</div>
 <% } %>
 <% for (var i = limit * 3; i < maxGamesLength; i ++) { %>
-	<div class="_img imgNormal left" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[i]['appId'] %>/header.jpg")' data-index=<%= i %>>
+	<div class="_img imgNormal left" style='background-image: url("http://cdn.akamai.steamstatic.com/steam/apps/<%= games[i]['appId'] %>/header.jpg")' data-appId=<%= games[i]['appId'] %>>
 		<% if (games[i]['priceOverview']['discount_percent'] > 0) { %>
 		<div class="discountPercent _discountPercent">
 			<span>-<%= games[i]['priceOverview']['discount_percent'] %>%</span>

@@ -3,30 +3,40 @@
 var Q = require('q');
 var _ = require('underscore');
 
+function setupAccount (AccountController, steamId, Account) {
+    return AccountController.getSteamIdNumberFromString(steamId)
+        .then(function (steamNumId) {
+            var data = {};
+            if (steamNumId === -1) {
+                res.status(404)
+                    .send('Not found');
+            }
+
+            return Account._init(steamNumId, AccountController);
+        });
+}
+
 var routes = function (app, router, Account, AccountController, ProfileController, FriendsController, GamesController, GamesDetailController, GameReviewController) {
 	// application -------------------------------------------------------------
 	app.get('/', function (req, res) {
 	    res.render('index', {view:{}});
 	});
 
-    app.get('/:steam_id', function(req, res) {
+    app.get('/:steam_id', function (req, res) {
         var steamId = req.params.steam_id;
-        AccountController.getSteamIdNumberFromString(steamId)
-            .then(function (steamNumId) {
-                var data = {};
-                if (steamNumId === -1) {
-                    res.status(404)
-                        .send('Not found');
-                } else {
-                    data['steamId'] = steamNumId;
-                }
-
-                Account._init(data['steamId'], AccountController)
-                    .then(function () {
-                        res.render('steamize', {view: data});
-                    });
+        setupAccount(AccountController, steamId, Account)
+            .then(function () {
+                res.render('steamize', {view: {'steamId' : Account.getSteamId(), 'page': 'games', 'appId': -1}});
             });
     });
+
+    app.get('/:steam_id/:app_id', function (req, res) {
+        var steamId = req.params.steam_id;
+        setupAccount(AccountController, steamId, Account)
+            .then(function () {
+                res.render('steamize', {view: {'steamId' : Account.getSteamId(), 'page': 'gameSummary', 'appId': req.params.app_id}});
+            });
+        });
 
 	// routes ======================================================================
 
@@ -101,12 +111,12 @@ var routes = function (app, router, Account, AccountController, ProfileControlle
                 });
         });
 
-        router.route('/id/:steam_id/reviews/:appId')
+        router.route('/id/:steam_id/reviews/:app_id')
             .get(function (req,res) {
                 Account.setSteamId(req.params.steam_id);
                 var gamesList = Account.getGamesList();
 
-                GameReviewController.getGameReview(gamesList, req.params.appId)
+                GameReviewController.getGameReview(gamesList, req.params.app_id)
                     .then(function (response) {
                         res.json(response);
                     });

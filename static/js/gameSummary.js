@@ -16,8 +16,6 @@ define([
 	}
 
 	gameSummary.render = function (data) {
-		window.history.pushState({"showLibrary" : false},"", window.location.pathname+'/'+data['appId']);
-
 		var view = gameSummary.view;
 
 		var newData = gameSummary.deepCopy(data);

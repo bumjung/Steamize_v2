@@ -28,23 +28,24 @@ define([
 
 		var response = view.getResponse();
 
-		view.update(response)
-			.then(function() {
-				games.addListenersToImages(newData, 0);
-			});
 
 		pagination.init(games, data);
+
+		return view.update(response)
+			.then(function() {
+				games.addListenersToImages(0);
+			});
 	}
 
 	games.loadMore = function (startIndex, data) {
 		var view = games.view;
 		view.append(data)
 			.then(function() {
-				games.addListenersToImages(data['view']['data'], startIndex);
+				games.addListenersToImages(startIndex);
 			});
 	}
 
-	games.addListenersToImages = function (data, startIndex) {
+	games.addListenersToImages = function (startIndex) {
 		var imageSelector = $('#imageContainer').find('._img');
 		for (var i = startIndex; i < imageSelector.length; i++) {
 			$(imageSelector[i]).on('mouseenter', function () {
@@ -66,13 +67,8 @@ define([
 				}
 			});
 			$(imageSelector[i]).on('click', function () {
-				var index = $(this).data('index');
-				var gameData = data['games'][index - startIndex];
-
-				gameSummary.render(gameData)
-					.then(function () {
-						games.hideLibrary();
-					});
+				var appId = $(this).data('appid');
+				window.location.href = window.location.pathname + '/' + appId;
 			});
 		}
 	}

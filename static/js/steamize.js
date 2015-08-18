@@ -4,8 +4,9 @@ define([
 	'./view.js',
 	'./games.js',
 	'./profile.js',
-	'./userSummary.js'
-	], function (base, smz, View, games, profile, userSummary) {
+	'./userSummary.js',
+	'./gameSummary.js'
+	], function (base, smz, View, games, profile, userSummary, gameSummary) {
 	'use strict';
 
 	var steamize = {};
@@ -38,8 +39,6 @@ define([
 	steamize.render = function (data) {
 		$.extend(steamize, data);
 
-		window.history.pushState({"showLibrary" : true},"", window.location.pathname);
-
 		steamize.getProfileData(steamize.steamId)
 			.then(function(data) {
 				profile.render(data);
@@ -47,7 +46,22 @@ define([
 
 		steamize.getGamesData(steamize.steamId)
 			.then(function(data) {
-				games.render(data);
+				if (steamize.page === 'gameSummary') {
+					if (steamize.appId > 0) {
+						games.hideLibrary();
+						var renderData = {};
+						var gamesData = data['view']['data']['games'];
+						for (var i=0; i<gamesData.length; i++) {
+							if (gamesData[i]['appId'] == steamize.appId) {
+								renderData = gamesData[i];
+								break;
+							}
+						}
+						gameSummary.render(renderData);
+					}
+				} else {
+					games.render(data);
+				}
 				userSummary.render(data);
 			});
 	}
