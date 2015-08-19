@@ -27,25 +27,25 @@ define([
 		view.setTemplate(data['view']['template']);
 
 		var response = view.getResponse();
-
-
+		
 		pagination.init(games, data);
 
 		return view.update(response)
 			.then(function() {
-				games.addListenersToImages(0);
+				games.addListenersToImages(newData, 0);
 			});
 	}
 
 	games.loadMore = function (startIndex, data) {
 		var view = games.view;
-		view.append(data)
+		
+		return view.append(data)
 			.then(function() {
-				games.addListenersToImages(startIndex);
+				games.addListenersToImages(data['view']['data'], startIndex);
 			});
 	}
 
-	games.addListenersToImages = function (startIndex) {
+	games.addListenersToImages = function (data, startIndex) {
 		var imageSelector = $('#imageContainer').find('._img');
 		for (var i = startIndex; i < imageSelector.length; i++) {
 			$(imageSelector[i]).on('mouseenter', function () {
@@ -68,23 +68,21 @@ define([
 			});
 			$(imageSelector[i]).on('click', function () {
 				var appId = $(this).data('appid');
-				window.location.href = window.location.pathname + '/' + appId;
+
+				var renderData = games.findGameData(data, appId);
+				gameSummary.render(renderData)
+					.then(function () {		
+							games.hideLibrary();		
+						});
 			});
 		}
 	}
 
-	games.preloadImagesByIndex = function (newData, start, end) {
-		for (var i=start; i < end; i++) {
-			var temp = new Array();
-			var images = new Array();
-
-			for(var j=0; j < newData['games'][i]['screenshots'].length; j++) {
-				temp.push(newData['games'][i]['screenshots'][j]['path_full']);
-			}
-
-			for (var i = 0; i < images.length; i++) {
-				images[i] = new Image();
-				images[i].src = images[i];
+	games.findGameData = function (data, appId) {
+		var gamesData = data['games'];
+		for (var i=0; i<gamesData.length; i++) {
+			if (gamesData[i]['appId'] == appId) {
+				return gamesData[i];
 			}
 		}
 	}

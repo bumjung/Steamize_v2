@@ -26,7 +26,7 @@ var routes = function (app, router, Account, AccountController, ProfileControlle
         var steamId = req.params.steam_id;
         setupAccount(AccountController, steamId, Account)
             .then(function () {
-                res.render('steamize', {view: {'steamId' : Account.getSteamId(), 'page': 'games', 'appId': -1}});
+                res.render('steamize', {view: {'steamId' : Account.getSteamId(), 'page': 'games'}});
             });
     });
 

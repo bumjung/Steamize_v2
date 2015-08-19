@@ -8,6 +8,7 @@
 		sz.steamize.steamId = '<%= view.steamId %>';
 		sz.steamize.page = '<%= view.page %>';
 		sz.steamize.appId = '<%= view.appId %>';
+		sz.steamize.url = '/'+window.location.pathname.split('/')[1];
 		startup.load(sz);
 	});
 </script>

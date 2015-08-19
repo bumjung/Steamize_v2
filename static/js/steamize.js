@@ -16,16 +16,18 @@ define([
 
 		smz.initSubmit();
 		profile.init();
-		games.init(steamize.steamId);
+		games.init();
 		userSummary.init();
 
 		window.onpopstate = function(e){
-		    if (e.state) {
-		    	if (e.state.showLibrary) {
-		    		games.showLibrary();
-		    	} else {
-		    		games.hideLibrary();
+		    if (e.state && !e.state.showLibrary) {
+		    	games.hideLibrary();
+		    	if (!gameSummary.isRendered()) {
+					sz.steamize.page = 'gameSummary';
+		    		gameSummary.render(e.state.data);
 		    	}
+		    } else {
+		    	games.showLibrary();
 		    }
 		};
 
@@ -46,26 +48,20 @@ define([
 
 		steamize.getGamesData(steamize.steamId)
 			.then(function(data) {
-				if (steamize.page === 'gameSummary') {
-					if (steamize.appId > 0) {
-						games.hideLibrary();
-						var renderData = {};
-						var gamesData = data['view']['data']['games'];
-						for (var i=0; i<gamesData.length; i++) {
-							if (gamesData[i]['appId'] == steamize.appId) {
-								renderData = gamesData[i];
-								break;
-							}
-						}
-						gameSummary.render(renderData);
-					}
-				} else {
-					games.render(data);
-				}
 				userSummary.render(data);
+
+				// redirecting directly to an appid
+				if (steamize.page === 'gameSummary') {
+					var renderData = games.findGameData(data['view']['data'], steamize.appId);
+
+					games.hideLibrary();
+					gameSummary.render(renderData);
+				}
+
+				// make sure library section is rendered... just in case
+				games.render(data);
 			});
 	}
-
 
 	return steamize;
 });
