@@ -9,8 +9,7 @@ var database = require('../database');
 
 var AccountController = function (Redis) {
 	this.Redis = Redis;
-	// cache for 12 hours
-	this.Redis.setExpireTime(60 * 60 * 12);
+	this.CACHE_EXPIRE = 60 * 60 * 12;
 };
 
 AccountController.prototype = _.extend(BaseController.prototype, {
@@ -24,7 +23,7 @@ AccountController.prototype = _.extend(BaseController.prototype, {
 				} else {
 					var url = URL.getSteamIdNumberFromString(steamId);
 
-					return self.sendRequest(url, 'getSteamIdNumberFromString_'+steamId).then(function (body) {
+					return self.sendRequestAndCache(url, 'getSteamIdNumberFromString_'+steamId, self.CACHE_EXPIRE).then(function (body) {
             			var body = JSON.parse(body);
 
             			if (body['response'] && body['response']['success'] === 1) {
@@ -43,9 +42,10 @@ AccountController.prototype = _.extend(BaseController.prototype, {
 	},
 
 	getOwnedGames: function (steamId) {	
+		var self = this;
 		var url = URL.getOwnedGames(steamId);
 		
-		return this.sendRequest(url, 'getOwnedGames_'+steamId).then(function (body) {
+		return this.sendRequestAndCache(url, 'getOwnedGames_'+steamId, self.CACHE_EXPIRE).then(function (body) {
             var body = JSON.parse(body);
             return body['response']['games'];
         });

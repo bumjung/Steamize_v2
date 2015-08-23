@@ -11,7 +11,7 @@ var Helper = require('../helper.js');
 var GamesController = function (Redis) {
 	this.Redis = Redis;
 	// cache for 1 hour
-	this.Redis.setExpireTime(60 * 60 * 1);
+	this.CACHE_EXPIRE = 60 * 60 * 1;
 	this.MAX_DEMO_ACHIEVEMENTS = 5;
 };
 
@@ -97,9 +97,10 @@ GamesController.prototype = _.extend(BaseController.prototype, {
 	},
 
 	getPlayerAchievements: function (game, steamId) {
+		var self = this;
 	    var url = URL.getPlayerAchievements(game['appid'], steamId);
 
-	    return this.sendRequest(url, 'getPlayerAchievements_'+game['appid']+'_'+steamId).then(function (body) {
+	    return this.sendRequestAndCache(url, 'getPlayerAchievements_'+game['appid']+'_'+steamId, self.CACHE_EXPIRE).then(function (body) {
 		    var body = JSON.parse(body);
 	        var response = {
 	            name: body['playerstats']['gameName'],

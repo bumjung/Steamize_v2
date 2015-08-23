@@ -9,7 +9,7 @@ var URL = require('../steamUrl');
 var GamesDetailController = function (Redis) {
     this.Redis = Redis;
     // cache for 1 day
-    this.Redis.setExpireTime(60 * 60 * 24);
+    this.CACHE_EXPIRE = 60 * 60 * 24;
 };
 
 GamesDetailController.prototype = _.extend(BaseController.prototype, {
@@ -83,7 +83,7 @@ GamesDetailController.prototype = _.extend(BaseController.prototype, {
         var self = this;
         var url = URL.getAppDetails(appId);
 
-        return self.sendRequest(url, 'getAppDetails_'+appId).then(function (body) {
+        return self.sendRequestAndCache(url, 'getAppDetails_'+appId, self.CACHE_EXPIRE).then(function (body) {
             var body = JSON.parse(body);
             return body[appId]['data'];
         });

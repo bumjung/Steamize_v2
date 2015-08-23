@@ -7,8 +7,7 @@ var request = require('request');
 var BaseController = function () {};
 
 _.extend(BaseController.prototype, {
-
-	sendRequest: function (url, cacheKey) {
+	sendRequestAndCache: function (url, cacheKey, cacheExpire) {
 		var self = this;
 		if (cacheKey) {
 			return self.Redis.getCache(cacheKey)
@@ -16,16 +15,18 @@ _.extend(BaseController.prototype, {
 	                return body;
 	            },
 	            function () {
-	            	return self._sendRequest(url).then(function (body) {
-	                    return body;
-	                })
-	                .then(function (data) {
-	                    return self.Redis.setCache(cacheKey, data);
-	                });
+	            	return self.sendRequest(url)
+		                .then(function (data) {
+		                    return self.Redis.setCache(cacheKey, cacheExpire, data);
+		                });
 	            });
         }
 
-    	return self._sendRequest(url).then(function (body) {
+    	return this.sendRequest(url);
+	},
+
+	sendRequest: function (url) {
+    	return this._sendRequest(url).then(function (body) {
             return body;
         });
 	},
