@@ -1,8 +1,9 @@
 define([
 	'./base.js',
 	'./view.js',
-	'./gameReview.js'
-	], function (base, View, gameReview) {
+	'./gameReview.js',
+	'./history.js'
+	], function (base, View, gameReview, history) {
 	'use strict';
 
 	var gameSummary = {};
@@ -16,13 +17,7 @@ define([
 	}
 
 	gameSummary.render = function (data) {
-		// if user directly linked to appid, don't set history
-		if (sz.steamize.page !== 'gameSummary') {
-			window.history.pushState({showLibrary : false, data: data},"", sz.steamize.url+'/'+data['appId']);
-		} else {
-			// your work is finished
-			sz.steamize.page = '';
-		}
+		history.setHistory(data);
 
 		var view = gameSummary.view;
 

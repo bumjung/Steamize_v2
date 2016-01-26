@@ -28,6 +28,7 @@ ProfileController.prototype = _.extend(BaseController.prototype, {
                 response['personaname']     = data['personaname'];
                 response['personastate']    = data['personastate'];
                 response['steamid']         = data['steamid'];
+                response['gameextrainfo']   = data['gameextrainfo'] ? data['gameextrainfo'] : false;
 
                 return {
                     success: 1,

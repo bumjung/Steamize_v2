@@ -5,8 +5,9 @@ define([
 	'./games.js',
 	'./profile.js',
 	'./userSummary.js',
-	'./gameSummary.js'
-	], function (base, smz, View, games, profile, userSummary, gameSummary) {
+	'./gameSummary.js',
+	'./history.js'
+	], function (base, smz, View, games, profile, userSummary, gameSummary, history) {
 	'use strict';
 
 	var steamize = {};
@@ -18,18 +19,7 @@ define([
 		profile.init();
 		games.init();
 		userSummary.init();
-
-		window.onpopstate = function(e){
-		    if (e.state && !e.state.showLibrary) {
-		    	games.hideLibrary();
-		    	if (!gameSummary.isRendered()) {
-					sz.steamize.page = 'gameSummary';
-		    		gameSummary.render(e.state.data);
-		    	}
-		    } else {
-		    	games.showLibrary();
-		    }
-		};
+		history.init(games, gameSummary);
 
 		this.render(data);
 	}
@@ -51,7 +41,7 @@ define([
 				userSummary.render(data);
 
 				// redirecting directly to an appid
-				if (steamize.page === 'gameSummary') {
+				if (history.isRenderGameSummary()) {
 					var renderData = games.findGameData(data['view']['data'], steamize.appId);
 
 					games.hideLibrary();

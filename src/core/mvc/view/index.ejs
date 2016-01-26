@@ -3,10 +3,30 @@
 <html lang="en">
 	<% include ./header %>
 	<body data-name="index">
-		<div class="container">
-			<form method="POST" id="steamIDForm">
-				<input type="text" class="steamIDInput" name="steamIDInput" />
-			</form>
+	<div id="fb-root"></div>
+	<script>(function(d, s, id) {
+	  var js, fjs = d.getElementsByTagName(s)[0];
+	  if (d.getElementById(id)) return;
+	  js = d.createElement(s); js.id = id;
+	  js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.5&appId=971032916259422";
+	  fjs.parentNode.insertBefore(js, fjs);
+	}(document, 'script', 'facebook-jssdk'));</script>
+
+		<div class="indexContainer">
+			<h2>View Steam profiles online.</h2>
+			<div class="formContainer">
+				<form method="POST" id="steamIDForm">
+					<input type="text" class="steamIDInput" name="steamIDInput" placeholder="Type any steam ID number"/>
+					<button type="submit" class="steamIDSubmit" name="steamIDSubmit" form="steamIDForm" value="Submit">Search</button>
+				</form>
+		</div>
+
+		<div class="indexFooter">
+			<div class="socialLikes">
+				<div class="fb-like" data-href="https://steamize2.herokuapp.com" data-layout="button_count" data-action="like" data-show-faces="true" data-share="false"></div>
+			</div>
+
+			<span class="notSteam">Powered by Steam. Valve and Steam are trademarks of Valve Corporation. Steamize is not affiliated with Valve in any way.</span>
 		</div>
 		<% include ./basic_scripts %>
 		<% include ./variable_setup %>

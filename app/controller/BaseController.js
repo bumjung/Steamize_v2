@@ -15,20 +15,14 @@ _.extend(BaseController.prototype, {
 	                return body;
 	            },
 	            function () {
-	            	return self.sendRequest(url)
+	            	return self._sendRequest(url)
 		                .then(function (data) {
 		                    return self.Redis.setCache(cacheKey, cacheExpire, data);
 		                });
 	            });
         }
 
-    	return this.sendRequest(url);
-	},
-
-	sendRequest: function (url) {
-    	return this._sendRequest(url).then(function (body) {
-            return body;
-        });
+    	return this._sendRequest(url);
 	},
 
 	_sendRequest: function (url) {
