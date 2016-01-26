@@ -8,6 +8,15 @@ define([
 
 	var gameSummary = {};
 
+	function handleRecommendationTotalOverflow(value) {
+        var intRecTotal = parseInt(value['recommendations']['total']);
+        if(intRecTotal >= 1000000) {
+            value['recommendations']['total'] = (Math.floor((intRecTotal / 1000000)*10)/10).toFixed(1) + "m";
+        } else if (intRecTotal >= 10000) {
+            value['recommendations']['total'] = (Math.floor((intRecTotal / 1000)*10)/10).toFixed(1) + "k";
+        }
+	}
+
 	gameSummary.init = function () {
 		$.extend(gameSummary, base);
 		gameSummary.viewClass = '.oneGame';
@@ -25,7 +34,9 @@ define([
 		var ratingArray = newData['metacritic']['rating'].split(' ');
 
 		newData['metacritic']['cssClass'] = ratingArray.length > 1 ? ratingArray[1].toLowerCase() : ratingArray[0].toLowerCase();
-		
+
+		handleRecommendationTotalOverflow(newData);
+
 		view.setData(newData);
 		view.setTemplate('/src/core/mvc/view/gameSummary.ejs');
 
@@ -37,8 +48,8 @@ define([
 			});
 
 		return view.update(response)
-			.then(function () {			
-				$('._description').html($.parseHTML(newData['description']));	
+			.then(function () {
+				$('._description').html($.parseHTML(newData['description']));
 				$('.banner').unslider({
 					delay: false,
 					keys: true,               //  Enable keyboard (left, right) arrow shortcuts

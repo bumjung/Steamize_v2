@@ -31,8 +31,15 @@
 	<div class="stats">
 		<h3 class="sub-heading">Stats</h3>
 		<div class="summary">
-			<span class="hours"><%= playTimeTwoWeeks %> hours played <span class="text">in last 2 weeks</span></span>
-			<span class="achievements"><%= totalAchievementsCompleted %>/<%= totalAchievements %> Achievements</span>
+			<span class="hours"><%= playTimeTwoWeeks %> hours played &nbsp;<span class="text">in last 2 weeks</span></span>
+			<span class="achievements">
+				<% if (totalAchievements > 0) { %>
+				<%= totalAchievementsCompleted %>/<%= totalAchievements %> Achievements
+				<% } else { %>
+				Achievements Not Available
+				<% } %>
+
+			</span>
 		</div>
 	</div>
 	<div class="gameReview"><!-- gameSummary.ejs --></div>
