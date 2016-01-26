@@ -16,7 +16,7 @@ ProfileController.prototype = _.extend(BaseController.prototype, {
 	getPlayerSummaries: function (steamId) {
         var self = this;
         var url = URL.getPlayerSummaries(steamId);
-        
+
         return this.sendRequestAndCache(url, 'getPlayerSummaries_'+steamId, self.CACHE_EXPIRE).then(function (body) {
             body = JSON.parse(body);
 
@@ -29,6 +29,7 @@ ProfileController.prototype = _.extend(BaseController.prototype, {
                 response['personastate']    = data['personastate'];
                 response['steamid']         = data['steamid'];
                 response['gameextrainfo']   = data['gameextrainfo'] ? data['gameextrainfo'] : false;
+                response['gameid']          = data['gameid'] ? data['gameid'] : '';
 
                 return {
                     success: 1,

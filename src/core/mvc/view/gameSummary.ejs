@@ -13,7 +13,13 @@
 			<% if (priceOverview['discount_percent'] > 0) { %>
 			<span class="cost discount">$<%= priceOverview['initial'] %></span>
 			<% } %>
-			<span class="cost">$<%= priceOverview['final'] %></span>
+			<span class="cost">
+			<% if (priceOverview['final'] > 0) { %>
+			$<%= priceOverview['final'] %>
+			<% } else { %>
+			&nbsp;Free
+			<% } %>
+			</span>
 		</span>
 	</div>
 	<div class="description">

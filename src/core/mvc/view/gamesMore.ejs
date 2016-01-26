@@ -8,9 +8,9 @@
 		<div class="gamesDetail _gamesDetail hide">
 			<div class="bottom">
 				<span class="name"><%= games[i]['name'] %></span>
-				<span class="hours"><%= games[i]['playTimeForever'] %>h</span>
+				<span class="hours"><span class="fa fa-clock-o clock"></span> <%= games[i]['playTimeForever'] %>h</span>
 				<% if (games[i]['totalAchievements'] > 0) { %>
-					<span class="achievements"><%= games[i]['totalAchievementsCompleted'] %>/<%= games[i]['totalAchievements'] %></span>
+					<span class="achievements"><span class="fa fa-flag flag"></span> <%= games[i]['totalAchievementsCompleted'] %>/<%= games[i]['totalAchievements'] %></span>
 				<% } %>
 				<% if (games[i]['priceOverview']['final'] > 0) { %>
 					<span class="pricing right">

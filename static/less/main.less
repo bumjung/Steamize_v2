@@ -44,6 +44,8 @@ a {
 			width: @userInfoContainerWidth;
 
 			a {
+				font-size: 26px;
+				font-weight: lighter;
 				color: @white;
 			}
 		}
@@ -87,8 +89,10 @@ a {
 				font-size: 18px;
 
 				.status-circle {
+					position:relative;
+					top: 1px;
 					display: inline-block;
-					margin: 0 3px 2px 0;
+					margin: 0 0px 2px 7px;
 					width: 8px;
 					height: 8px;
 					border-radius:8px;
@@ -98,8 +102,18 @@ a {
 				}
 			}
 			.status {
+				margin: 2px 0;
+				padding: 0;
+				line-height:15px;
 				font-size: 14px;
 				color: @fontGrey;
+				span {
+					display: block;
+				}
+			}
+
+			.name a:hover, .status a:hover {
+				text-decoration: underline;
 			}
 		}
 		.userSummary {
@@ -162,7 +176,7 @@ a {
 					}
 
 					.name {
-						max-width: 50%;
+						max-width: 31%;
 						margin: 0 14px -1px 15px;
 						white-space: nowrap;
 						overflow:hidden;
@@ -174,6 +188,11 @@ a {
 					}
 					.achievements {
 						font-size: 14px;
+					}
+
+					.clock, .flag {
+					    font-size: 16px;
+					    position: relative;
 					}
 				}
 			}
@@ -286,6 +305,7 @@ a {
 				font-size: 26px;
 				margin: 0;
 				padding: 0;
+				text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
 			}
 			.screenshots {
 				position: relative;

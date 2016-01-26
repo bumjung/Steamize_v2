@@ -4,9 +4,9 @@
 		<div class="gamesDetail _gamesDetail hide">
 			<div class="bottom">
 				<span class="name"><%= games[i]['name'] %></span>
-				<span class="hours"><%= games[i]['playTimeForever'] %>h</span>
+				<span class="hours"><span class="fa fa-clock-o clock"></span> <%= games[i]['playTimeForever'] %>h played</span>
 				<% if (games[i]['totalAchievements'] > 0) { %>
-					<span class="achievements"><%= games[i]['totalAchievementsCompleted'] %>/<%= games[i]['totalAchievements'] %></span>
+					<span class="achievements"><span class="fa fa-flag flag"></span> <%= games[i]['totalAchievementsCompleted'] %>/<%= games[i]['totalAchievements'] %></span>
 				<% } %>
 				<% if (games[i]['priceOverview']['final'] > 0) { %>
 					<span class="pricing right">
@@ -32,9 +32,9 @@
 		<div class="gamesDetail _gamesDetail hide">
 			<div class="bottom">
 				<span class="name"><%= games[index]['name'] %></span>
-				<span class="hours"><%= games[index]['playTimeForever'] %>h</span>
+				<span class="hours"><span class="fa fa-clock-o clock"></span> <%= games[index]['playTimeForever'] %>h</span>
 				<% if (games[index]['totalAchievements'] > 0) { %>
-					<span class="achievements"><%= games[index]['totalAchievementsCompleted'] %>/<%= games[index]['totalAchievements'] %></span>
+					<span class="achievements"><span class="fa fa-flag flag"></span> <%= games[index]['totalAchievementsCompleted'] %>/<%= games[index]['totalAchievements'] %></span>
 				<% } %>
 				<% if (games[index]['priceOverview']['final'] > 0) { %>
 					<span class="pricing right">
@@ -60,9 +60,9 @@
 		<div class="gamesDetail _gamesDetail hide">
 			<div class="bottom">
 				<span class="name"><%= games[index]['name'] %></span>
-				<span class="hours"><%= games[index]['playTimeForever'] %>h</span>
+				<span class="hours"><span class="fa fa-clock-o clock"></span> <%= games[index]['playTimeForever'] %>h</span>
 				<% if (games[index]['totalAchievements'] > 0) { %>
-					<span class="achievements"><%= games[index]['totalAchievementsCompleted'] %>/<%= games[index]['totalAchievements'] %></span>
+					<span class="achievements"><span class="fa fa-flag flag"></span> <%= games[index]['totalAchievementsCompleted'] %>/<%= games[index]['totalAchievements'] %></span>
 				<% } %>
 				<% if (games[index]['priceOverview']['final'] > 0) { %>
 					<span class="pricing right">
@@ -89,9 +89,9 @@
 		<div class="gamesDetail _gamesDetail hide">
 			<div class="bottom">
 				<span class="name"><%= games[i]['name'] %></span>
-				<span class="hours"><%= games[i]['playTimeForever'] %>h</span>
+				<span class="hours"><span class="fa fa-clock-o clock"></span> <%= games[i]['playTimeForever'] %>h</span>
 				<% if (games[i]['totalAchievements'] > 0) { %>
-					<span class="achievements"><%= games[i]['totalAchievementsCompleted'] %>/<%= games[i]['totalAchievements'] %></span>
+					<span class="achievements"><span class="fa fa-flag flag"></span> <%= games[i]['totalAchievementsCompleted'] %>/<%= games[i]['totalAchievements'] %></span>
 				<% } %>
 				<% if (games[i]['priceOverview']['final'] > 0) { %>
 					<span class="pricing right">

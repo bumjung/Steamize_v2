@@ -19,7 +19,7 @@ define([
 	games.render = function (data) {
 		var view = games.view;
 		var newData = games.deepCopy(data['view']['data']);
-		
+
 		newData['limit'] = Math.min(Math.floor(newData['games'].length/3), 3);
 		newData['maxGamesLength'] = Math.min(newData['games'].length, 15);
 
@@ -27,7 +27,7 @@ define([
 		view.setTemplate(data['view']['template']);
 
 		var response = view.getResponse();
-		
+
 		pagination.init(games, data);
 
 		return view.update(response)
@@ -38,7 +38,7 @@ define([
 
 	games.loadMore = function (startIndex, data) {
 		var view = games.view;
-		
+
 		return view.append(data)
 			.then(function() {
 				games.addListenersToImages(data['view']['data'], startIndex);
@@ -71,8 +71,8 @@ define([
 
 				var renderData = games.findGameData(data, appId);
 				gameSummary.render(renderData)
-					.then(function () {		
-							games.hideLibrary();		
+					.then(function () {
+							games.hideLibrary();
 						});
 			});
 		}
@@ -98,7 +98,7 @@ define([
 		$(games.viewClass).show();
 		$('.moreGames').show();
 		$(gameSummary.viewClass).hide();
-	}	
+	}
 
 	return games;
 });

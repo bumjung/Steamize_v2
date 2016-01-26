@@ -16,12 +16,14 @@ define([
 	profile.render = function (data) {
 		var view = profile.view;
 		var newData = profile.deepCopy(data['view']['data']);
-		
+
 		newData['stateClass'] = profile.PLAYER_STATUS[newData['personastate']].split(' ').join('_').toLowerCase();
 		if (newData['gameextrainfo']) {
+			newData['inGame'] = true;
 			newData['personastate'] = newData['gameextrainfo'];
 		} else {
-			newData['personastate'] = profile.PLAYER_STATUS[newData['personastate']];
+			newData['inGame'] = false;
+			newData['personastate'] = newData['personastate'] > 0 ? profile.PLAYER_STATUS[newData['personastate']] : "";
 		}
 
 		view.setData(newData);
