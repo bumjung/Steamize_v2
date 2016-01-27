@@ -66,8 +66,10 @@ define([
 
 	gameSummary.addListenerToReadMe = function () {
 		$('._read-more').on('click', function () {
+			var parentLength = parseInt($('._description').parent().css("max-height"));
+			var childLength = $('._description').height() + 46;
 			$('._description').parent().css({
-				'max-height': 999
+				'max-height': childLength > parentLength ? childLength : parentLength
 			});
 			$(this).hide();
 			return false;

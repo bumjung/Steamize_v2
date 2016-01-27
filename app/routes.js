@@ -2,6 +2,7 @@
 
 var Q = require('q');
 var _ = require('underscore');
+var DemoProfile = require('./model/demo.js');
 
 function setupAccount (AccountController, steamId, Account) {
     return AccountController.getSteamIdNumberFromString(steamId)
@@ -17,7 +18,9 @@ function setupAccount (AccountController, steamId, Account) {
 }
 
 var routes = function (app, router, Account, AccountController, ProfileController, FriendsController, GamesController, GamesDetailController, GameReviewController) {
-	// application -------------------------------------------------------------
+	var demoProfile = new DemoProfile(app, router);
+
+    // application -------------------------------------------------------------
 	app.get('/', function (req, res) {
 	    res.render('index', {view:{}});
 	});
@@ -101,7 +104,7 @@ var routes = function (app, router, Account, AccountController, ProfileControlle
                                 tempResponse['genres']          = gamesDetail['gamesDetail'][appId]['genres'];
                                 tempResponse['screenshots']     = gamesDetail['gamesDetail'][appId]['screenshots'];
                                 tempResponse['recommendations'] = gamesDetail['gamesDetail'][appId]['recommendations'];
-                                
+
                                 response['view']['data']['games'].push(tempResponse);
                             }
                         }

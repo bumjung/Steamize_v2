@@ -8,7 +8,7 @@
 		sz.steamize.steamId = '<%= view.steamId %>';
 		sz.steamize.page = '<%= view.page %>';
 		sz.steamize.appId = '<%= view.appId %>';
-		sz.steamize.url = '/'+window.location.pathname.split('/')[1];
+		sz.steamize.url = window.location.pathname.indexOf('demo/profile') < 0 ? '/'+window.location.pathname.split('/')[1] : '/demo/profile';
 		startup.load(sz);
 	});
 </script>

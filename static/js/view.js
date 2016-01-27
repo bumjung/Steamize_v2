@@ -5,14 +5,14 @@ define([], function () {
 		this.el = name;
 		this.template = '';
 		this.data = {};
-       	$(this.el).html('waiting...');
+       	$(this.el).html('Loading...');
 	};
 
 	$.extend(view.prototype, {
 		update: function (v) {
 			var dfd = $.Deferred();
 			var self = this;
-			
+
 			if(v.view.template) {
 				$.get(v.view.template, function (template) {
 					var func = ejs.compile(template);
@@ -31,7 +31,7 @@ define([], function () {
 		append: function (v) {
 			var dfd = $.Deferred();
 			var self = this;
-			
+
 			if(v.view.template) {
 				$.get(v.view.template, function (template) {
 					var func = ejs.compile(template);

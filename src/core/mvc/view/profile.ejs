@@ -1,11 +1,11 @@
 <img class="avatar" src="<%= avatarfull %>"/>
 <div>
-	<span class="name"><a href="http://steamcommunity.com/profiles/<%= steamid %>"><%= personaname %></a><span class="status-circle <%= stateClass %>"></span></span>
+	<span class="name"><a href="/<%= steamid %>"><%= personaname %></a><span class="status-circle <%= stateClass %>"></span></span>
 	<p class="status">
         <span>
         <% if (inGame) {%>
         In Game:
-        </span><a src="http://steamcommunity.com/app/<%= gameid %>" class="gameName">
+        </span><a href="/<%= steamid %>/<%= gameid %>" class="gameName">
         <%= personastate %>
         </a>
         <%} else {%>
